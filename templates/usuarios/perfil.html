@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mi Perfil{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4" style="max-width: 760px;">
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+
+            <div class="mb-4">
+                <h2 class="fw-bold mb-1">Mi Perfil</h2>
+                <p class="text-muted mb-0">
+                    Actualiza tus datos personales de acceso.
+                </p>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <label class="form-label">Nombre</label>
+                        {{ form.first_name }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Apellido</label>
+                        {{ form.last_name }}
+                    </div>
+
+                    <div class="col-md-12">
+                        <label class="form-label">Correo electrónico</label>
+                        {{ form.email }}
+                    </div>
+
+                </div>
+
+                <div class="mt-4 d-flex gap-2 flex-wrap">
+                    <button type="submit" class="btn btn-primary">
+                        Guardar cambios
+                    </button>
+
+                    <a href="{% url 'cambiar_password' %}" class="btn btn-outline-dark">
+                        Cambiar contraseña
+                    </a>
+
+                    {% if request.user.role == 'INSPECTOR' %}
+                        <a href="{% url 'dashboard_inspector' %}" class="btn btn-secondary">
+                            Volver
+                        </a>
+                    {% else %}
+                        <a href="{% url 'dashboard_empresa' %}" class="btn btn-secondary">
+                            Volver
+                        </a>
+                    {% endif %}
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

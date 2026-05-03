@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Editar Garantía{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <div class="mb-4">
+        <h2>Editar Garantía</h2>
+        <p class="text-muted mb-0">
+            Modificar la garantía del contrato {{ garantia.contrato.numero_contrato }}.
+        </p>
+    </div>
+
+    <div class="card shadow-sm obra-form-card">
+        <div class="card-body p-4">
+            <form method="POST"
+                  class="form-confirmacion-modal"
+                  data-modal-titulo="Guardar cambios"
+                  data-modal-mensaje="¿Estás seguro de guardar los cambios realizados en esta garantía?">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+                        <label class="form-label obra-form-label" for="{{ form.tipo_garantia.id_for_label }}">
+                            Tipo de Garantía
+                        </label>
+                        {{ form.tipo_garantia }}
+                        {% if form.tipo_garantia.errors %}
+                            <div class="text-danger small mt-1">{{ form.tipo_garantia.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label obra-form-label" for="{{ form.fecha_inicio_vigencia.id_for_label }}">
+                            Fecha Inicio de Vigencia
+                        </label>
+                        {{ form.fecha_inicio_vigencia }}
+                        {% if form.fecha_inicio_vigencia.errors %}
+                            <div class="text-danger small mt-1">{{ form.fecha_inicio_vigencia.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label obra-form-label" for="{{ form.fecha_termino_vigencia.id_for_label }}">
+                            Fecha Término de Vigencia
+                        </label>
+                        {{ form.fecha_termino_vigencia }}
+                        {% if form.fecha_termino_vigencia.errors %}
+                            <div class="text-danger small mt-1">{{ form.fecha_termino_vigencia.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label obra-form-label" for="{{ form.observacion.id_for_label }}">
+                            Observación
+                        </label>
+                        {{ form.observacion }}
+                        {% if form.observacion.errors %}
+                            <div class="text-danger small mt-1">{{ form.observacion.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+                <div class="mt-4 d-flex gap-2 flex-wrap">
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <a href="{% url 'contratos_detalle' garantia.contrato.id %}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/confirmaciones_modal.js' %}?v=2"></script>
+
+{% endblock %}

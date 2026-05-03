@@ -1,0 +1,413 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load money_filters %}
+
+{% block title %}Detalle Estado de Pago{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="mb-4">
+        <h2>Estado de Pago N° {{ edp.numero_estado_pago }}</h2>
+        <p class="text-muted mb-0">
+            Detalle del estado de pago seleccionado.
+        </p>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+
+            <p><strong>Obra asociada:</strong> {{ edp.obra.nombre }}</p>
+            <p><strong>Licitación:</strong> {{ edp.obra.codigo }}</p>
+            <p><strong>Monto Proyecto:</strong> {{ edp.monto_contrato_base|clp }}</p>
+
+            <p><strong>Fecha de Emisión:</strong>
+                {{ edp.fecha_inicio_periodo|date:"j \d\e F \d\e Y" }}
+            </p>
+
+            <p>
+                <strong>Estado:</strong>
+                <span class="badge obra-badge
+                    {% if edp.estado == 'EN_GESTION' %}obra-badge-planificacion
+                    {% elif edp.estado == 'ENVIADO' %}obra-badge-proceso
+                    {% elif edp.estado == 'APROBADO' %}obra-badge-finalizada
+                    {% elif edp.estado == 'RECHAZADO' %}obra-badge-rechazado
+                    {% elif edp.estado == 'PAGADO' %}obra-badge-pagado
+                    {% endif %}">
+                    {{ edp.get_estado_display }}
+                </span>
+            </p>
+
+            <p>
+                <strong>Estado de Firma:</strong>
+                <span class="badge
+                    {% if edp.estado_firma == 'FIRMADA' %}bg-success
+                    {% elif edp.estado_firma == 'PENDIENTE_EMPRESA' %}bg-warning text-dark
+                    {% elif edp.estado_firma == 'PENDIENTE_INSPECTOR' %}bg-info text-dark
+                    {% else %}bg-secondary
+                    {% endif %}">
+                    {{ edp.get_estado_firma_display }}
+                </span>
+            </p>
+
+            {% if edp.tiene_anticipo %}
+            <p><strong>Anticipo Solicitado:</strong>
+                {{ edp.porcentaje_anticipo|floatformat:0 }}%
+            </p>
+
+            <p><strong>Devolución Anticipo en este EDP:</strong>
+                {{ edp.porcentaje_devolucion_anticipo|floatformat:0 }}%
+            </p>
+            {% endif %}
+
+            <p><strong>Fecha de Creación:</strong>
+                {{ edp.fecha_creacion|date:"j \d\e F \d\e Y - H:i" }}
+            </p>
+
+            {% if request.user.role == 'INSPECTOR' %}
+            <div class="mt-4 d-flex gap-2 flex-wrap">
+
+                <a href="{% url 'edp_editar' edp.id %}" class="btn btn-outline-primary">
+                    Editar
+                </a>
+
+                <form method="POST"
+                      action="{% url 'edp_eliminar' edp.id %}"
+                      class="form-confirmacion-modal d-inline"
+                      data-modal-titulo="Eliminar Estado de Pago"
+                      data-modal-mensaje="¿Estás seguro de eliminar este Estado de Pago?">
+
+                    {% csrf_token %}
+
+                    <button type="submit" class="btn btn-outline-danger">
+                        Eliminar
+                    </button>
+
+                </form>
+
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+
+                <h4 class="mb-0">Planilla de Partidas</h4>
+
+                {% if request.user.role == 'INSPECTOR' %}
+                <a href="{% url 'partida_edp_crear' edp.id %}" class="btn btn-primary btn-sm">
+                    + Añadir nueva partida
+                </a>
+                {% endif %}
+
+            </div>
+
+            {% if edp.partidas.all %}
+
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th>Ítem</th>
+                                <th>Partida</th>
+                                <th>Unidad</th>
+                                <th>Cantidad</th>
+                                <th>P. Unitario</th>
+                                <th>Monto Total</th>
+                                <th>% Presente EDP</th>
+                                <th>Monto EDP</th>
+                                <th>% Restante</th>
+                                <th>Saldo Restante por Pagar</th>
+
+                                {% if request.user.role == 'INSPECTOR' %}
+                                <th class="text-center" style="width: 90px;">Acciones</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for partida in edp.partidas.all %}
+
+                                {% if partida.tipo_fila == 'TITULO' %}
+
+                                <tr class="table-secondary">
+
+                                    <td class="fw-bold text-center">
+                                        {{ partida.item }}
+                                    </td>
+
+                                    {% if request.user.role == 'INSPECTOR' %}
+
+                                        <td colspan="9" class="fw-bold text-uppercase">
+                                            {{ partida.nombre_partida }}
+                                        </td>
+
+                                        <td class="text-center">
+
+                                            <div class="d-flex justify-content-center gap-1">
+
+                                                <a href="{% url 'partida_edp_editar' partida.id %}"
+                                                   class="btn btn-outline-primary btn-sm"
+                                                   title="Editar">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </a>
+
+                                                <form method="POST"
+                                                      action="{% url 'partida_edp_eliminar' partida.id %}"
+                                                      class="form-confirmacion-modal d-inline"
+                                                      data-modal-titulo="Eliminar Fila"
+                                                      data-modal-mensaje="¿Estás seguro de eliminar esta fila?">
+
+                                                    {% csrf_token %}
+
+                                                    <button type="submit"
+                                                            class="btn btn-outline-danger btn-sm"
+                                                            title="Eliminar">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+
+                                                </form>
+
+                                            </div>
+
+                                        </td>
+
+                                    {% else %}
+
+                                        <td colspan="9" class="fw-bold text-uppercase">
+                                            {{ partida.nombre_partida }}
+                                        </td>
+
+                                    {% endif %}
+
+                                </tr>
+
+                                {% else %}
+
+                                <tr>
+
+                                    <td>{{ partida.item }}</td>
+                                    <td>{{ partida.nombre_partida }}</td>
+                                    <td>{{ partida.unidad }}</td>
+                                    <td>{{ partida.cantidad|floatformat:0 }}</td>
+                                    <td>{{ partida.precio_unitario|clp }}</td>
+                                    <td>{{ partida.monto_total_partida|clp }}</td>
+                                    <td>{{ partida.porcentaje_avance_periodo|floatformat:0 }}%</td>
+                                    <td>{{ partida.monto_periodo|clp }}</td>
+                                    <td>{{ partida.porcentaje_restante|floatformat:0 }}%</td>
+                                    <td>{{ partida.saldo_restante|clp }}</td>
+
+                                    {% if request.user.role == 'INSPECTOR' %}
+                                    <td class="text-center">
+
+                                        <div class="d-flex justify-content-center gap-1">
+
+                                            <a href="{% url 'partida_edp_editar' partida.id %}"
+                                               class="btn btn-outline-primary btn-sm"
+                                               title="Editar">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+
+                                            <form method="POST"
+                                                  action="{% url 'partida_edp_eliminar' partida.id %}"
+                                                  class="form-confirmacion-modal d-inline"
+                                                  data-modal-titulo="Eliminar Partida"
+                                                  data-modal-mensaje="¿Estás seguro de eliminar esta partida?">
+
+                                                {% csrf_token %}
+
+                                                <button type="submit"
+                                                        class="btn btn-outline-danger btn-sm"
+                                                        title="Eliminar">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+
+                                            </form>
+
+                                        </div>
+
+                                    </td>
+                                    {% endif %}
+
+                                </tr>
+
+                                {% endif %}
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <div class="row justify-content-end mt-4">
+                    <div class="col-md-5">
+
+                        <div class="card border-0 bg-light">
+                            <div class="card-body">
+
+                                <h5 class="mb-3">Resumen General</h5>
+
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span><strong>Subtotal Partidas:</strong></span>
+                                    <span>{{ edp.subtotal_periodo|clp }}</span>
+                                </div>
+
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span><strong>Gastos Generales ({{ edp.porcentaje_gastos_generales|floatformat:0 }}%):</strong></span>
+                                    <span>{{ edp.gastos_generales|clp }}</span>
+                                </div>
+
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span><strong>Utilidades ({{ edp.porcentaje_utilidades|floatformat:0 }}%):</strong></span>
+                                    <span>{{ edp.utilidades|clp }}</span>
+                                </div>
+
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span><strong>Neto:</strong></span>
+                                    <span>{{ edp.neto|clp }}</span>
+                                </div>
+
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span><strong>IVA (19%):</strong></span>
+                                    <span>{{ edp.iva|clp }}</span>
+                                </div>
+
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span><strong>Total General:</strong></span>
+                                    <span>{{ edp.total_general|clp }}</span>
+                                </div>
+
+                                {% if edp.tiene_anticipo %}
+                                <div class="d-flex justify-content-between mb-2 text-danger">
+                                    <span><strong>Descuento Anticipo:</strong></span>
+                                    <span>- {{ edp.monto_descuento_anticipo|clp }}</span>
+                                </div>
+                                {% endif %}
+
+                                <hr>
+
+                                <div class="d-flex justify-content-between">
+                                    <span><strong>Total a Pagar EDP:</strong></span>
+                                    <span><strong>{{ edp.total_a_pagar_edp|clp }}</strong></span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            {% else %}
+
+                <div class="alert alert-warning mb-0">
+                    Este Estado de Pago no tiene partidas asociadas.
+                </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex gap-2 flex-wrap">
+
+        <a href="{% url 'edp' %}" class="btn btn-secondary">
+            Volver al listado
+        </a>
+
+        {% if request.user.role == 'INSPECTOR' %}
+
+            {% if edp.firmado_inspector %}
+                <button class="btn btn-outline-success" disabled>
+                    Inspector ya firmó
+                </button>
+            {% else %}
+                <form method="POST"
+                      action="{% url 'firmar_edp' edp.id %}"
+                      class="form-confirmacion-modal d-inline"
+                      data-modal-titulo="Firmar Estado de Pago"
+                      data-modal-mensaje="¿Confirmas la firma del Inspector para este Estado de Pago?">
+
+                    {% csrf_token %}
+
+                    <button type="submit" class="btn btn-outline-primary">
+                        Firmar Inspector
+                    </button>
+
+                </form>
+            {% endif %}
+
+            <a href="{% url 'edp_pdf' edp.id %}" class="btn btn-success">
+                Generar PDF
+            </a>
+
+            {% if edp.numero_estado_pago > 1 %}
+            <a href="{% url 'edp_pdf' edp.id %}?comparativo=1" class="btn btn-outline-success">
+                PDF con EDP anterior
+            </a>
+            {% endif %}
+
+        {% elif request.user.role == 'CONTRATISTA' %}
+
+            {% if edp.firmado_empresa %}
+                <button class="btn btn-outline-success" disabled>
+                    Empresa ya firmó
+                </button>
+            {% elif edp.firmado_inspector %}
+                <form method="POST"
+                      action="{% url 'firmar_edp' edp.id %}"
+                      class="form-confirmacion-modal d-inline"
+                      data-modal-titulo="Firmar Estado de Pago"
+                      data-modal-mensaje="¿Confirmas la firma de la Empresa Contratista para este Estado de Pago?">
+
+                    {% csrf_token %}
+
+                    <button type="submit" class="btn btn-outline-primary">
+                        Firmar Empresa
+                    </button>
+
+                </form>
+            {% else %}
+                <button class="btn btn-outline-secondary" disabled>
+                    Esperando firma inspector
+                </button>
+            {% endif %}
+
+            {% if edp.estado_firma == 'FIRMADA' %}
+                <a href="{% url 'edp_pdf' edp.id %}" class="btn btn-success">
+                    Generar PDF
+                </a>
+
+                {% if edp.numero_estado_pago > 1 %}
+                <a href="{% url 'edp_pdf' edp.id %}?comparativo=1" class="btn btn-outline-success">
+                    PDF con EDP anterior
+                </a>
+                {% endif %}
+            {% else %}
+                <button class="btn btn-success" disabled>
+                    Generar PDF
+                </button>
+
+                {% if edp.numero_estado_pago > 1 %}
+                <button class="btn btn-outline-success" disabled>
+                    PDF con EDP anterior
+                </button>
+                {% endif %}
+            {% endif %}
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<script src="{% static 'js/confirmaciones_modal.js' %}?v=2"></script>
+
+{% endblock %}

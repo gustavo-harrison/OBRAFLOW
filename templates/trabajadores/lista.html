@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}Trabajadores{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <h2 class="mb-0">Listado de Trabajadores</h2>
+
+        <div class="d-flex gap-2 flex-wrap">
+            {% if request.user.role == 'CONTRATISTA' %}
+            <a href="{% url 'trabajadores_crear' %}" class="btn btn-primary">
+                + Nuevo Trabajador
+            </a>
+            {% endif %}
+
+            <button class="btn btn-outline-dark position-relative" type="button" data-bs-toggle="collapse" data-bs-target="#filtrosTrabajadores" aria-expanded="false" aria-controls="filtrosTrabajadores">
+                <i class="bi bi-funnel me-1"></i> Filtros
+
+                {% if filtros_activos > 0 %}
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{ filtros_activos }}
+                </span>
+                {% endif %}
+            </button>
+        </div>
+    </div>
+
+    <div class="collapse mb-4 {% if busqueda or estado_actual %}show{% endif %}" id="filtrosTrabajadores">
+        <div class="card shadow-sm obra-form-card">
+            <div class="card-body p-4">
+                <form method="GET">
+                    <div class="row g-3 align-items-end">
+
+                        <div class="col-md-8">
+                            <label class="form-label obra-form-label">Buscar por nombre, RUT u obra</label>
+                            <input
+                                type="text"
+                                name="q"
+                                value="{{ busqueda }}"
+                                class="form-control"
+                                placeholder="Ej: Juan, 12.345.678-9 o nombre de obra">
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label obra-form-label">Estado</label>
+                            <select name="estado" class="form-select">
+                                <option value="">Todos</option>
+                                {% for value, label in estado_choices %}
+                                    <option value="{{ value }}" {% if estado_actual == value %}selected{% endif %}>
+                                        {{ label }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-2 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+                            <a href="{% url 'trabajadores' %}" class="btn btn-outline-secondary w-100">Limpiar</a>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for trabajador in trabajadores %}
+        <div class="col-md-4 mb-4">
+            <a href="{% url 'trabajadores_detalle' trabajador.id %}" class="obra-card-link">
+                <div class="card shadow-sm h-100 obra-card {% if request.user.role == 'CONTRATISTA' %}obra-card-empresa{% elif request.user.role == 'INSPECTOR' %}obra-card-inspector{% endif %}">
+                    <div class="card-body text-center">
+
+                        <div class="obra-card-icon {% if request.user.role == 'CONTRATISTA' %}obra-card-icon-empresa{% elif request.user.role == 'INSPECTOR' %}obra-card-icon-inspector{% endif %} mb-3">
+                            <i class="bi bi-person-badge"></i>
+                        </div>
+
+                        <h5 class="card-title fw-bold mb-2">
+                            {{ trabajador.nombres }} {{ trabajador.apellidos }}
+                        </h5>
+
+                        <p class="mb-2 text-muted">
+                            {{ trabajador.rut }}
+                        </p>
+
+                        <p class="mb-2">
+                            <strong>Cargo:</strong> {{ trabajador.cargo }}
+                        </p>
+
+                        <p class="mb-3">
+                            <strong>Obra:</strong> {{ trabajador.obra.nombre }}
+                        </p>
+
+                        <span class="badge obra-badge
+                            {% if trabajador.estado == 'ACTIVO' %}obra-badge-finalizada
+                            {% elif trabajador.estado == 'INACTIVO' %}obra-badge-planificacion
+                            {% endif %}">
+                            {{ trabajador.get_estado_display }}
+                        </span>
+
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning">
+                No se encontraron trabajadores con los filtros seleccionados.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}

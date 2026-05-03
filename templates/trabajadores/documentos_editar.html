@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Documentos Trabajador{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="mb-4">
+        <h2>Documentos del Trabajador</h2>
+        <p class="text-muted mb-0">
+            Subir o actualizar documentos de {{ trabajador.nombres }} {{ trabajador.apellidos }}.
+        </p>
+    </div>
+
+    <div class="card shadow-sm obra-form-card">
+        <div class="card-body p-4">
+
+            <form method="POST"
+                  enctype="multipart/form-data"
+                  class="form-confirmacion-modal"
+                  data-modal-titulo="Actualizar Documentos"
+                  data-modal-mensaje="¿Estás seguro de guardar los documentos del trabajador?">
+
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="row g-4">
+
+                    <div class="col-md-12">
+                        <label class="form-label obra-form-label">Carnet de Identidad</label>
+                        {{ form.carnet_identidad }}
+
+                        {% if documentos.carnet_identidad %}
+                            <div class="mt-2">
+                                <a href="{{ documentos.carnet_identidad.url }}" target="_blank" class="btn btn-sm btn-outline-dark">
+                                    Ver archivo actual
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {% if form.carnet_identidad.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.carnet_identidad.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-12">
+                        <label class="form-label obra-form-label">Certificado de Antecedentes</label>
+                        {{ form.certificado_antecedentes }}
+
+                        {% if documentos.certificado_antecedentes %}
+                            <div class="mt-2">
+                                <a href="{{ documentos.certificado_antecedentes.url }}" target="_blank" class="btn btn-sm btn-outline-dark">
+                                    Ver archivo actual
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {% if form.certificado_antecedentes.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.certificado_antecedentes.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-12">
+                        <label class="form-label obra-form-label">Contrato de Trabajo</label>
+                        {{ form.contrato_trabajo }}
+
+                        {% if documentos.contrato_trabajo %}
+                            <div class="mt-2">
+                                <a href="{{ documentos.contrato_trabajo.url }}" target="_blank" class="btn btn-sm btn-outline-dark">
+                                    Ver archivo actual
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {% if form.contrato_trabajo.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.contrato_trabajo.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+                <div class="mt-4 d-flex gap-2 flex-wrap">
+                    <button type="submit" class="btn btn-primary">
+                        Guardar Documentos
+                    </button>
+
+                    <a href="{% url 'trabajadores_detalle' trabajador.id %}" class="btn btn-secondary">
+                        Cancelar
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<script src="{% static 'js/confirmaciones_modal.js' %}?v=2"></script>
+
+{% endblock %}

@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard Empresa{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-12">
+            <div class="card shadow-sm border-0 dashboard-welcome-card dashboard-empresa-card h-100">
+                <div class="card-body p-4">
+                    <div class="row align-items-center g-4">
+
+                        <div class="col-md-3 text-center">
+                            <img src="{% static 'images/empresa_dashboard.jpeg' %}"
+                                 alt="Empresa"
+                                 class="img-fluid dashboard-role-image">
+                        </div>
+
+                        <div class="col-md-9">
+                            <h2 class="fw-bold mb-2">
+                                Bienvenido, {{ request.user.first_name }} {{ request.user.last_name }}
+                            </h2>
+
+                            <p class="text-muted mb-3">
+                                Panel de gestión para trabajadores, obras asignadas, actas y estados de pago.
+                            </p>
+
+                            <div class="dashboard-live-box">
+                                <div class="dashboard-live-label">Hora actual</div>
+                                <div id="liveClockEmpresa" class="dashboard-live-time">--:--:--</div>
+                                <div id="liveDateEmpresa" class="dashboard-live-date">--</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 dashboard-mini-stat">
+                <div class="card-body">
+                    <div class="dashboard-stat-label">Obras Asociadas</div>
+                    <div class="dashboard-stat-value">{{ total_obras }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 dashboard-mini-stat">
+                <div class="card-body">
+                    <div class="dashboard-stat-label">Trabajadores</div>
+                    <div class="dashboard-stat-value">{{ total_trabajadores }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 dashboard-mini-stat">
+                <div class="card-body">
+                    <div class="dashboard-stat-label">Actas Disponibles</div>
+                    <div class="dashboard-stat-value">{{ total_documentos }}</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold mb-3">Estado de Trabajadores</h5>
+
+                    <div class="dashboard-status-list">
+
+                        <div class="dashboard-status-pill status-success">
+                            <span>Activos</span>
+                            <strong>{{ trabajadores_activos }}</strong>
+                        </div>
+
+                        <div class="dashboard-status-pill status-neutral">
+                            <span>Inactivos</span>
+                            <strong>{{ trabajadores_inactivos }}</strong>
+                        </div>
+
+                        <div class="dashboard-status-pill status-warning">
+                            <span>Documentación pendiente</span>
+                            <strong>{{ trabajadores_docs_pendientes }}</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold mb-3">Estado Documental y Pagos</h5>
+
+                    <div class="dashboard-status-list">
+
+                        <div class="dashboard-status-pill status-warning">
+                            <span>Actas pendientes</span>
+                            <strong>{{ documentos_pendientes }}</strong>
+                        </div>
+
+                        <div class="dashboard-status-pill status-success">
+                            <span>Actas firmadas</span>
+                            <strong>{{ documentos_firmados }}</strong>
+                        </div>
+
+                        <div class="dashboard-status-pill status-warning">
+                            <span>EDP pendientes</span>
+                            <strong>{{ edp_pendientes }}</strong>
+                        </div>
+
+                        <div class="dashboard-status-pill status-success">
+                            <span>EDP firmados</span>
+                            <strong>{{ edp_firmados }}</strong>
+                        </div>
+
+                        <div class="dashboard-status-pill status-info">
+                            <span>EDP pagados</span>
+                            <strong>{{ edp_pagados }}</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="{% static 'js/dashboard_empresa.js' %}"></script>
+
+{% endblock %}

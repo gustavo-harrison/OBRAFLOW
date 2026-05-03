@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Detalle Trabajador{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body p-4">
+
+            <div class="mb-4">
+                <h2>{{ trabajador.nombres }} {{ trabajador.apellidos }}</h2>
+                <p class="text-muted mb-0">Detalle del trabajador seleccionado</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>RUT:</strong> {{ trabajador.rut }}</p>
+                    <p><strong>Fecha de Nacimiento:</strong> {{ trabajador.fecha_nacimiento }}</p>
+                    <p><strong>Cargo:</strong> {{ trabajador.cargo }}</p>
+                </div>
+
+                <div class="col-md-6">
+                    <p><strong>Fecha de Ingreso:</strong> {{ trabajador.fecha_ingreso }}</p>
+                    <p><strong>Obra:</strong> {{ trabajador.obra.nombre }}</p>
+                    <p>
+                        <strong>Estado:</strong>
+                        <span class="badge obra-badge
+                            {% if trabajador.estado == 'ACTIVO' %}obra-badge-finalizada
+                            {% elif trabajador.estado == 'INACTIVO' %}obra-badge-planificacion
+                            {% endif %}">
+                            {{ trabajador.get_estado_display }}
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- DOCUMENTOS -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                <h4 class="mb-0">Documentación Laboral</h4>
+
+                {% if request.user.role == 'CONTRATISTA' %}
+                <a href="{% url 'trabajador_documentos_editar' trabajador.id %}" class="btn btn-sm btn-primary">
+                    Subir / Actualizar Documentos
+                </a>
+                {% endif %}
+            </div>
+
+            {% if trabajador.documentos_completos %}
+                <div class="alert alert-success">
+                    Documentación completa del trabajador.
+                </div>
+            {% else %}
+                <div class="alert alert-warning">
+                    Documentación incompleta o pendiente.
+                </div>
+            {% endif %}
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 h-100">
+                        <h6 class="fw-bold">Carnet de Identidad</h6>
+
+                        {% if trabajador.documentos.carnet_identidad %}
+                            <span class="badge bg-success mb-2">Cargado</span>
+                            <br>
+                            <a href="{{ trabajador.documentos.carnet_identidad.url }}" target="_blank" class="btn btn-sm btn-outline-dark">
+                                Ver archivo
+                            </a>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">Pendiente</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 h-100">
+                        <h6 class="fw-bold">Certificado de Antecedentes</h6>
+
+                        {% if trabajador.documentos.certificado_antecedentes %}
+                            <span class="badge bg-success mb-2">Cargado</span>
+                            <br>
+                            <a href="{{ trabajador.documentos.certificado_antecedentes.url }}" target="_blank" class="btn btn-sm btn-outline-dark">
+                                Ver archivo
+                            </a>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">Pendiente</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 h-100">
+                        <h6 class="fw-bold">Contrato de Trabajo</h6>
+
+                        {% if trabajador.documentos.contrato_trabajo %}
+                            <span class="badge bg-success mb-2">Cargado</span>
+                            <br>
+                            <a href="{{ trabajador.documentos.contrato_trabajo.url }}" target="_blank" class="btn btn-sm btn-outline-dark">
+                                Ver archivo
+                            </a>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">Pendiente</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex gap-2 flex-wrap">
+        <a href="{% url 'obras_detalle' trabajador.obra.id %}" class="btn btn-secondary">
+            Volver a la obra
+        </a>
+
+        {% if request.user.role == 'CONTRATISTA' %}
+        <a href="{% url 'trabajadores_editar' trabajador.id %}" class="btn btn-outline-primary">
+            Editar
+        </a>
+
+        <form method="POST"
+              action="{% url 'trabajadores_eliminar' trabajador.id %}"
+              class="form-confirmacion-modal d-inline"
+              data-modal-titulo="Eliminar Trabajador"
+              data-modal-mensaje="¿Estás seguro de eliminar este trabajador? Esta acción no se puede deshacer.">
+
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-danger">
+                Eliminar
+            </button>
+        </form>
+        {% endif %}
+    </div>
+
+</div>
+
+<script src="{% static 'js/confirmaciones_modal.js' %}?v=2"></script>
+
+{% endblock %}

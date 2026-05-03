@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard Inspector{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="row g-4 mb-4">
+
+        <!-- Bienvenida -->
+        <div class="col-12">
+            <div class="card shadow-sm border-0 dashboard-welcome-card dashboard-inspector-card h-100">
+                <div class="card-body p-4">
+
+                    <div class="row align-items-center g-4">
+
+                        <div class="col-md-3 text-center">
+                            <img src="{% static 'images/inspector_dashboard.jpeg' %}"
+                                 alt="Inspector"
+                                 class="img-fluid dashboard-role-image">
+                        </div>
+
+                        <div class="col-md-9">
+
+                            <h2 class="fw-bold mb-2">
+                                Bienvenido, {{ request.user.first_name }} {{ request.user.last_name }}
+                            </h2>
+
+                            <p class="text-muted mb-3">
+                                Panel general de supervisión y control administrativo de obras.
+                            </p>
+
+                            <div class="row g-3">
+
+                                <div class="col-md-4">
+                                    <div class="dashboard-live-box w-100">
+                                        <div class="dashboard-live-label">Hora actual</div>
+                                        <div id="liveClockInspector" class="dashboard-live-time">--:--:--</div>
+                                        <div id="liveDateInspector" class="dashboard-live-date">--</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="dashboard-live-box w-100">
+                                        <div class="dashboard-live-label">UF hoy</div>
+                                        <div id="valorUF" class="dashboard-live-time">$--</div>
+                                        <div id="fechaUF" class="dashboard-live-date">Cargando...</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="dashboard-live-box w-100">
+                                        <div class="dashboard-live-label">UTM vigente</div>
+                                        <div id="valorUTM" class="dashboard-live-time">$--</div>
+                                        <div id="fechaUTM" class="dashboard-live-date">Cargando...</div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Indicadores -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm border-0 dashboard-mini-stat">
+                <div class="card-body">
+                    <div class="dashboard-stat-label">Obras</div>
+                    <div class="dashboard-stat-value">{{ total_obras }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm border-0 dashboard-mini-stat">
+                <div class="card-body">
+                    <div class="dashboard-stat-label">Contratos</div>
+                    <div class="dashboard-stat-value">{{ total_contratos }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm border-0 dashboard-mini-stat">
+                <div class="card-body">
+                    <div class="dashboard-stat-label">Estado de Pago</div>
+                    <div class="dashboard-stat-value">{{ total_edps }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm border-0 dashboard-mini-stat">
+                <div class="card-body">
+                    <div class="dashboard-stat-label">Actas</div>
+                    <div class="dashboard-stat-value">{{ total_actas }}</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Resumen -->
+    <div class="row g-4 mb-5">
+
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold mb-3">Resumen Estados de Pago</h5>
+
+                    <div class="dashboard-status-list">
+
+                        <div class="dashboard-status-pill status-neutral">
+                            <span>En Gestión</span>
+                            <strong>{{ edp_borrador }}</strong>
+                        </div>
+
+                        <div class="dashboard-status-pill status-warning">
+                            <span>Enviado</span>
+                            <strong>{{ edp_enviado }}</strong>
+                        </div>
+
+                        <div class="dashboard-status-pill status-success">
+                            <span>Aprobado</span>
+                            <strong>{{ edp_aprobado }}</strong>
+                        </div>
+
+                        <div class="dashboard-status-pill status-info">
+                            <span>Pagado</span>
+                            <strong>{{ edp_pagado }}</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold mb-3">Resumen Administrativo</h5>
+
+                    <div class="dashboard-status-list">
+
+                    <div class="dashboard-status-pill status-warning">
+                        <span>Actas pendientes</span>
+                        <strong>{{ actas_pendientes }}</strong>
+                    </div>
+
+                    <div class="dashboard-status-pill status-success">
+                        <span>Actas firmadas</span>
+                        <strong>{{ actas_firmadas }}</strong>
+                    </div>
+
+                    <div class="dashboard-status-pill status-warning">
+                        <span>Garantías por vencer</span>
+                        <strong>{{ garantias_por_vencer }}</strong>
+                    </div>
+
+                    <div class="dashboard-status-pill status-danger">
+                        <span>Garantías vencidas</span> 
+                        <strong>{{ garantias_vencidas }}</strong>
+                    </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="{% static 'js/dashboard_inspector.js' %}"></script>
+
+{% endblock %}

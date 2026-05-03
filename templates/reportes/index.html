@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Reportes{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="mb-4">
+        <h2>Generador de Reportes</h2>
+        <p class="text-muted mb-0">
+            Selecciona una obra y marca las secciones que deseas incluir en el PDF resumen.
+        </p>
+    </div>
+
+    <div class="card shadow-sm obra-form-card">
+        <div class="card-body p-4">
+
+            <form method="POST" action="{% url 'reporte_obra_pdf' %}">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="row g-4">
+
+                    <div class="col-md-12">
+                        <label class="form-label obra-form-label">Obra</label>
+                        {{ form.obra }}
+
+                        {% if form.obra.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.obra.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-12 mt-2">
+                        <h5 class="mb-1">Secciones a incluir</h5>
+                        <p class="text-muted small mb-0">
+                            Marca los bloques de información que serán incorporados en el reporte PDF.
+                        </p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="reportes-check-group">
+
+                            <label class="reporte-check-card" for="{{ form.incluir_obra.id_for_label }}">
+                                {{ form.incluir_obra }}
+                                <span class="reporte-check-content">
+                                    <span class="reporte-check-icon">
+                                        <i class="bi bi-building"></i>
+                                    </span>
+                                    <span>
+                                        <span class="reporte-check-title">{{ form.incluir_obra.label }}</span>
+                                        <small>Información base del proyecto seleccionado.</small>
+                                    </span>
+                                </span>
+                            </label>
+
+                            <label class="reporte-check-card" for="{{ form.incluir_empresa.id_for_label }}">
+                                {{ form.incluir_empresa }}
+                                <span class="reporte-check-content">
+                                    <span class="reporte-check-icon">
+                                        <i class="bi bi-briefcase"></i>
+                                    </span>
+                                    <span>
+                                        <span class="reporte-check-title">{{ form.incluir_empresa.label }}</span>
+                                        <small>Datos de la empresa contratista adjudicada.</small>
+                                    </span>
+                                </span>
+                            </label>
+
+                            <label class="reporte-check-card" for="{{ form.incluir_contratos.id_for_label }}">
+                                {{ form.incluir_contratos }}
+                                <span class="reporte-check-content">
+                                    <span class="reporte-check-icon">
+                                        <i class="bi bi-file-earmark-text"></i>
+                                    </span>
+                                    <span>
+                                        <span class="reporte-check-title">{{ form.incluir_contratos.label }}</span>
+                                        <small>Contratos asociados a la obra.</small>
+                                    </span>
+                                </span>
+                            </label>
+
+                            <label class="reporte-check-card mb-0" for="{{ form.incluir_garantias.id_for_label }}">
+                                {{ form.incluir_garantias }}
+                                <span class="reporte-check-content">
+                                    <span class="reporte-check-icon">
+                                        <i class="bi bi-shield-check"></i>
+                                    </span>
+                                    <span>
+                                        <span class="reporte-check-title">{{ form.incluir_garantias.label }}</span>
+                                        <small>Garantías registradas para el contrato.</small>
+                                    </span>
+                                </span>
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="reportes-check-group">
+
+                            <label class="reporte-check-card" for="{{ form.incluir_edp.id_for_label }}">
+                                {{ form.incluir_edp }}
+                                <span class="reporte-check-content">
+                                    <span class="reporte-check-icon">
+                                        <i class="bi bi-cash-coin"></i>
+                                    </span>
+                                    <span>
+                                        <span class="reporte-check-title">{{ form.incluir_edp.label }}</span>
+                                        <small>Estados de pago asociados al proyecto.</small>
+                                    </span>
+                                </span>
+                            </label>
+
+                            <label class="reporte-check-card" for="{{ form.incluir_trabajadores.id_for_label }}">
+                                {{ form.incluir_trabajadores }}
+                                <span class="reporte-check-content">
+                                    <span class="reporte-check-icon">
+                                        <i class="bi bi-people"></i>
+                                    </span>
+                                    <span>
+                                        <span class="reporte-check-title">{{ form.incluir_trabajadores.label }}</span>
+                                        <small>Trabajadores registrados por la empresa.</small>
+                                    </span>
+                                </span>
+                            </label>
+
+                            <label class="reporte-check-card mb-0" for="{{ form.incluir_actas.id_for_label }}">
+                                {{ form.incluir_actas }}
+                                <span class="reporte-check-content">
+                                    <span class="reporte-check-icon">
+                                        <i class="bi bi-clipboard-check"></i>
+                                    </span>
+                                    <span>
+                                        <span class="reporte-check-title">{{ form.incluir_actas.label }}</span>
+                                        <small>Actas generadas y firmadas del proyecto.</small>
+                                    </span>
+                                </span>
+                            </label>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="mt-4 d-flex gap-2 flex-wrap">
+                    <button type="submit" class="btn btn-success">
+                        Generar PDF
+                    </button>
+
+                    <a href="{% url 'dashboard_inspector' %}" class="btn btn-secondary">
+                        Volver
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block title %}Actas{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <h2 class="mb-0">Listado de Actas</h2>
+
+        <div class="d-flex gap-2 flex-wrap">
+            {% if request.user.role == 'INSPECTOR' %}
+            <a href="{% url 'actas_crear' %}" class="btn btn-primary">
+                + Nueva Acta
+            </a>
+            {% endif %}
+
+            <button class="btn btn-outline-dark position-relative" type="button" data-bs-toggle="collapse" data-bs-target="#filtrosActas" aria-expanded="false" aria-controls="filtrosActas">
+                <i class="bi bi-funnel me-1"></i> Filtros
+
+                {% if filtros_activos > 0 %}
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{ filtros_activos }}
+                </span>
+                {% endif %}
+            </button>
+        </div>
+    </div>
+
+    <div class="collapse mb-4 {% if busqueda or tipo_actual or estado_actual %}show{% endif %}" id="filtrosActas">
+        <div class="card shadow-sm obra-form-card">
+            <div class="card-body p-4">
+                <form method="GET">
+                    <div class="row g-3 align-items-end">
+
+                        <div class="col-md-5">
+                            <label class="form-label obra-form-label">Buscar por obra, licitación o empresa</label>
+                            <input
+                                type="text"
+                                name="q"
+                                value="{{ busqueda }}"
+                                class="form-control"
+                                placeholder="Ej: nombre de obra, LIC-001 o empresa">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label obra-form-label">Tipo de Acta</label>
+                            <select name="tipo" class="form-select">
+                                <option value="">Todos</option>
+                                {% for value, label in tipo_choices %}
+                                    <option value="{{ value }}" {% if tipo_actual == value %}selected{% endif %}>
+                                        {{ label }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label obra-form-label">Estado</label>
+                            <select name="estado" class="form-select">
+                                <option value="">Todos</option>
+                                {% for value, label in estado_choices %}
+                                    <option value="{{ value }}" {% if estado_actual == value %}selected{% endif %}>
+                                        {{ label }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-2 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+                            <a href="{% url 'actas' %}" class="btn btn-outline-secondary w-100">Limpiar</a>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        {% for acta in actas %}
+        <div class="col-md-4 mb-4">
+            <a href="{% url 'actas_detalle' acta.id %}" class="obra-card-link">
+                <div class="card shadow-sm h-100 obra-card {% if request.user.role == 'INSPECTOR' %}obra-card-inspector{% elif request.user.role == 'CONTRATISTA' %}obra-card-empresa{% endif %}">
+
+                    <div class="card-body text-center">
+
+                        <div class="obra-card-icon {% if request.user.role == 'INSPECTOR' %}obra-card-icon-inspector{% elif request.user.role == 'CONTRATISTA' %}obra-card-icon-empresa{% endif %} mb-3">
+                            <i class="bi bi-file-earmark-richtext"></i>
+                        </div>
+
+                        <h5 class="card-title fw-bold mb-2">
+                            Acta N° {{ acta.numero_acta }}
+                        </h5>
+
+                        <p class="mb-2 text-muted">
+                            {{ acta.nombre_obra }}
+                        </p>
+
+                        <p class="mb-2">
+                            <strong>Tipo:</strong> {{ acta.get_tipo_acta_display }}
+                        </p>
+
+                        <p class="mb-3">
+                            <strong>Fecha:</strong> {{ acta.fecha_acta }}
+                        </p>
+
+                        <span class="badge
+                            {% if acta.estado == 'FIRMADA' %}
+                                bg-success
+                            {% elif acta.estado == 'PENDIENTE_EMPRESA' %}
+                                bg-warning text-dark
+                            {% elif acta.estado == 'PENDIENTE_INSPECTOR' %}
+                                bg-warning text-dark
+                            {% elif acta.estado == 'PENDIENTE' %}
+                                bg-secondary
+                            {% else %}
+                                bg-secondary
+                            {% endif %}">
+                            {{ acta.get_estado_display }}
+                        </span>
+
+                    </div>
+
+                </div>
+            </a>
+        </div>
+
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning">
+                No se encontraron actas con los filtros seleccionados.
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

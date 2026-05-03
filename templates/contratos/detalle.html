@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load money_filters %}
+
+{% block title %}Detalle de Contrato{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="mb-4">
+        <h2>{{ contrato.numero_contrato }}</h2>
+        <p class="text-muted mb-0">Detalle del contrato seleccionado</p>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+
+            <p><strong>Obra asociada:</strong> {{ contrato.obra.nombre }}</p>
+
+            <p><strong>Número de Licitación:</strong> {{ contrato.obra.codigo }}</p>
+
+            <p><strong>Tipo de Contrato:</strong>
+                {{ contrato.get_tipo_contrato_display }}
+            </p>
+
+            <p><strong>Monto:</strong>
+                {{ contrato.monto|clp }}
+            </p>
+
+            <p><strong>Plazo (días):</strong>
+                {{ contrato.plazo_dias }}
+            </p>
+
+            <p><strong>Fecha de Inicio:</strong>
+                {{ contrato.fecha_inicio|date:"j \d\e F \d\e Y" }}
+            </p>
+
+            <p><strong>Fecha de Término:</strong>
+                {{ contrato.fecha_termino|date:"j \d\e F \d\e Y" }}
+            </p>
+
+            <p><strong>Estado:</strong>
+                {{ contrato.get_estado_display }}
+            </p>
+
+            {% if request.user.role == 'INSPECTOR' %}
+            <div class="mt-4 d-flex gap-2 flex-wrap">
+
+                <a href="{% url 'contratos_editar' contrato.id %}"
+                   class="btn btn-outline-primary">
+                    Editar
+                </a>
+
+                <form method="POST"
+                      action="{% url 'contratos_eliminar' contrato.id %}"
+                      class="form-confirmacion-modal d-inline"
+                      data-modal-titulo="Eliminar contrato"
+                      data-modal-mensaje="¿Estás seguro de eliminar este contrato? Esta acción no se puede deshacer.">
+
+                    {% csrf_token %}
+
+                    <button type="submit"
+                            class="btn btn-outline-danger">
+                        Eliminar
+                    </button>
+
+                </form>
+
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+
+                <h4 class="mb-0">Garantías Asociadas</h4>
+
+                {% if request.user.role == 'INSPECTOR' %}
+                <a href="{% url 'garantia_crear' contrato.id %}"
+                   class="btn btn-primary btn-sm">
+                    Añadir Garantía
+                </a>
+                {% endif %}
+
+            </div>
+
+            {% if garantias %}
+
+                <div class="row">
+
+                    {% for garantia in garantias %}
+
+                    <div class="col-md-6 mb-3">
+
+                        <div class="card border h-100 garantia-card">
+                            <div class="card-body">
+
+                                <div class="mb-3">
+
+                                    <span class="badge garantia-badge
+                                        {% if garantia.tipo_garantia == 'FIEL_CUMPLIMIENTO' %}
+                                            garantia-badge-fiel
+                                        {% elif garantia.tipo_garantia == 'RESPONSABILIDAD_CIVIL' %}
+                                            garantia-badge-civil
+                                        {% elif garantia.tipo_garantia == 'ANTICIPO' %}
+                                            garantia-badge-anticipo
+                                        {% endif %}">
+
+                                        {{ garantia.get_tipo_garantia_display }}
+
+                                    </span>
+
+                                </div>
+
+                                <p class="mb-2">
+                                    <strong>Inicio de Vigencia:</strong>
+                                    {{ garantia.fecha_inicio_vigencia|date:"j \d\e F \d\e Y" }}
+                                </p>
+
+                                <p class="mb-2">
+                                    <strong>Término de Vigencia:</strong>
+                                    {{ garantia.fecha_termino_vigencia|date:"j \d\e F \d\e Y" }}
+                                </p>
+
+                                {% if garantia.observacion %}
+                                <p class="mb-3">
+                                    <strong>Observación:</strong>
+                                    {{ garantia.observacion }}
+                                </p>
+                                {% endif %}
+
+                                {% if request.user.role == 'INSPECTOR' %}
+                                <div class="d-flex gap-2 flex-wrap">
+
+                                    <a href="{% url 'garantia_editar' garantia.id %}"
+                                       class="btn btn-outline-primary btn-sm">
+                                        Editar
+                                    </a>
+
+                                    <form method="POST"
+                                          action="{% url 'garantia_eliminar' garantia.id %}"
+                                          class="form-confirmacion-modal d-inline"
+                                          data-modal-titulo="Eliminar garantía"
+                                          data-modal-mensaje="¿Estás seguro de eliminar esta garantía?">
+
+                                        {% csrf_token %}
+
+                                        <button type="submit"
+                                                class="btn btn-outline-danger btn-sm">
+                                            Eliminar
+                                        </button>
+
+                                    </form>
+
+                                </div>
+                                {% endif %}
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="alert alert-warning mb-0">
+                    Este contrato no tiene garantías asociadas.
+                </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="{% url 'contratos' %}" class="btn btn-secondary">
+            Volver al listado
+        </a>
+    </div>
+
+</div>
+
+<script src="{% static 'js/confirmaciones_modal.js' %}?v=2"></script>
+
+{% endblock %}

@@ -1,0 +1,43 @@
+{% load static %}
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light navbar-inspector">
+    <div class="container">
+
+        <!-- Logo -->
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}">
+            <img src="{% static 'images/logo_navbar.jpeg' %}" alt="OBRAFLOW" class="logo">
+        </a>
+
+        <!-- Botón responsive -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavPublic">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Contenido -->
+        <div class="collapse navbar-collapse" id="navbarNavPublic">
+
+            <!-- Menú -->
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}#inicio">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}#mision">Misión</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}#vision">Visión</a>
+                </li>
+            </ul>
+
+            <!-- Login -->
+            <div class="nav-icons d-flex align-items-center">
+                <a href="{% url 'login' %}" class="nav-link login-icon d-flex align-items-center gap-1">
+                    <i class="bi bi-person fs-5"></i>
+                    <span>Ingresar</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</nav>

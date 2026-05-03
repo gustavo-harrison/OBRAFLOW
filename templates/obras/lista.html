@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}Obras{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <h2 class="mb-0">Listado de Obras</h2>
+
+        <div class="d-flex gap-2 flex-wrap">
+            {% if request.user.role == 'INSPECTOR' %}
+            <a href="{% url 'obras_crear' %}" class="btn btn-primary">
+                + Nueva Obra
+            </a>
+            {% endif %}
+
+            <button class="btn btn-outline-dark position-relative" type="button" data-bs-toggle="collapse" data-bs-target="#filtrosObras" aria-expanded="false" aria-controls="filtrosObras">
+                <i class="bi bi-funnel me-1"></i> Filtros
+
+                {% if filtros_activos > 0 %}
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{ filtros_activos }}
+                </span>
+                {% endif %}
+            </button>
+        </div>
+    </div>
+
+    <div class="collapse mb-4 {% if busqueda or campus_actual or estado_actual %}show{% endif %}" id="filtrosObras">
+        <div class="card shadow-sm obra-form-card">
+            <div class="card-body p-4">
+                <form method="GET">
+                    <div class="row g-3 align-items-end">
+
+                        <div class="col-md-5">
+                            <label class="form-label obra-form-label">Buscar por código o nombre</label>
+                            <input
+                                type="text"
+                                name="q"
+                                value="{{ busqueda }}"
+                                class="form-control"
+                                placeholder="Ej: LIC-002 o nombre de la obra">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label obra-form-label">Campus</label>
+                            <select name="campus" class="form-select">
+                                <option value="">Todos</option>
+                                {% for value, label in campus_choices %}
+                                    <option value="{{ value }}" {% if campus_actual == value %}selected{% endif %}>
+                                        {{ label }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label obra-form-label">Estado</label>
+                            <select name="estado" class="form-select">
+                                <option value="">Todos</option>
+                                {% for value, label in estado_choices %}
+                                    <option value="{{ value }}" {% if estado_actual == value %}selected{% endif %}>
+                                        {{ label }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-2 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+                            <a href="{% url 'obras' %}" class="btn btn-outline-secondary w-100">Limpiar</a>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        {% for obra in obras %}
+        <div class="col-md-4 mb-4">
+            <a href="{% url 'obras_detalle' obra.id %}" class="obra-card-link">
+                <div class="card shadow-sm h-100 obra-card {% if request.user.role == 'INSPECTOR' %}obra-card-inspector{% elif request.user.role == 'CONTRATISTA' %}obra-card-empresa{% endif %}">
+
+                    <div class="card-body text-center">
+
+                        <div class="obra-card-icon {% if request.user.role == 'INSPECTOR' %}obra-card-icon-inspector{% elif request.user.role == 'CONTRATISTA' %}obra-card-icon-empresa{% endif %} mb-3">
+                            <i class="bi bi-buildings"></i>
+                        </div>
+
+                        <h5 class="card-title fw-bold mb-2">
+                            {{ obra.nombre }}
+                        </h5>
+
+                        <p class="mb-2 text-muted">
+                            {{ obra.codigo }}
+                        </p>
+
+                        <p class="mb-3">
+                            <strong>Campus:</strong> {{ obra.get_campus_display }}
+                        </p>
+
+                        <span class="badge obra-badge
+                            {% if obra.estado == 'PLANIFICACION' %}obra-badge-planificacion
+                            {% elif obra.estado == 'EN_PROCESO' %}obra-badge-proceso
+                            {% elif obra.estado == 'FINALIZADA' %}obra-badge-finalizada
+                            {% endif %}">
+                            {{ obra.get_estado_display }}
+                        </span>
+
+                    </div>
+
+                </div>
+            </a>
+        </div>
+
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning">
+                No se encontraron obras con los filtros seleccionados.
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

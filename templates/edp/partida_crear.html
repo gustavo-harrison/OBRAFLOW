@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Nueva Fila EDP{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="mb-4">
+        <h2>Nueva Fila</h2>
+        <p class="text-muted mb-0">
+            Agregar una nueva fila al Estado de Pago N° {{ edp.numero_estado_pago }}.
+        </p>
+    </div>
+
+    <div class="card shadow-sm obra-form-card">
+        <div class="card-body p-4">
+
+            <form method="POST"
+                  class="form-confirmacion-modal"
+                  data-modal-titulo="Agregar Fila"
+                  data-modal-mensaje="¿Estás seguro de agregar esta fila al Estado de Pago?">
+
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
+                </div>
+                {% endif %}
+
+                <div class="row g-4">
+
+                    <div class="col-md-4">
+                        <label class="form-label obra-form-label">Tipo de fila</label>
+                        {{ form.tipo_fila }}
+                        {% if form.tipo_fila.errors %}
+                        <div class="text-danger small mt-1">{{ form.tipo_fila.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label obra-form-label">Ítem</label>
+                        {{ form.item }}
+                        {% if form.item.errors %}
+                        <div class="text-danger small mt-1">{{ form.item.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-12">
+                        <label class="form-label obra-form-label">Nombre Partida / Título</label>
+                        {{ form.nombre_partida }}
+                        {% if form.nombre_partida.errors %}
+                        <div class="text-danger small mt-1">{{ form.nombre_partida.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-4" id="campo-unidad">
+                        <label class="form-label obra-form-label">Unidad</label>
+                        {{ form.unidad }}
+                        {% if form.unidad.errors %}
+                        <div class="text-danger small mt-1">{{ form.unidad.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-4" id="campo-cantidad">
+                        <label class="form-label obra-form-label">Cantidad</label>
+                        {{ form.cantidad }}
+                        {% if form.cantidad.errors %}
+                        <div class="text-danger small mt-1">{{ form.cantidad.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-4" id="campo-precio-unitario">
+                        <label class="form-label obra-form-label">Precio Unitario</label>
+                        {{ form.precio_unitario }}
+                        {% if form.precio_unitario.errors %}
+                        <div class="text-danger small mt-1">{{ form.precio_unitario.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6" id="campo-avance-periodo">
+                        <label class="form-label obra-form-label">% Presente EDP</label>
+                        {{ form.porcentaje_avance_periodo }}
+                        {% if form.porcentaje_avance_periodo.errors %}
+                        <div class="text-danger small mt-1">{{ form.porcentaje_avance_periodo.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+                <div class="mt-4 d-flex gap-2 flex-wrap">
+                    <button type="submit" class="btn btn-primary">
+                        Guardar Fila
+                    </button>
+
+                    <a href="{% url 'edp_detalle' edp.id %}" class="btn btn-secondary">
+                        Cancelar
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<script src="{% static 'js/confirmaciones_modal.js' %}?v=2"></script>
+<script src="{% static 'js/partida_edp_form.js' %}?v=2"></script>
+
+{% endblock %}

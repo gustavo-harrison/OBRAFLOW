@@ -1,0 +1,327 @@
+{% load static %}
+
+<div class="top-bar-inspector d-flex justify-content-between align-items-center px-3">
+    <div class="hora-info d-flex align-items-center flex-nowrap small">
+        <i class="bi bi-clock me-2"></i>
+        <span id="topbarClockInspector" class="me-2">--:--:--</span>
+        <span class="me-2">|</span>
+        <span id="topbarDateInspector" class="text-truncate">--</span>
+    </div>
+
+    <div class="social-icons">
+        <a href="#"><i class="bi bi-facebook"></i></a>
+        <a href="#"><i class="bi bi-youtube"></i></a>
+        <a href="#"><i class="bi bi-twitter"></i></a>
+        <a href="#"><i class="bi bi-linkedin"></i></a>
+    </div>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-light navbar-inspector">
+    <div class="container">
+
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'dashboard_inspector' %}">
+            <img src="{% static 'images/logo_navbar.jpeg' %}" alt="OBRAFLOW" class="logo">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavInspector">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNavInspector">
+
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item"><a class="nav-link" href="{% url 'obras' %}">Obras</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'contratos' %}">Contratos</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'edp' %}">Estado de Pago</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'actas' %}">Actas</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'reportes_index' %}">Reportes</a></li>
+            </ul>
+
+            <div class="nav-icons d-flex align-items-center gap-3">
+
+                <button class="btn btn-link nav-alert-btn position-relative"
+                        type="button"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasAlertasInspector">
+
+                    <i class="bi bi-bell fs-5"></i>
+
+                    {% if nav_total_alertas > 0 %}
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {{ nav_total_alertas }}
+                    </span>
+                    {% endif %}
+                </button>
+
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle"
+                       href="#"
+                       role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        {% if request.user.first_name %}
+                            {{ request.user.first_name }} {{ request.user.last_name }}
+                        {% else %}
+                            {{ request.user.username }}
+                        {% endif %}
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'perfil_usuario' %}">
+                                <i class="bi bi-person me-2"></i> Mi perfil
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="{% url 'cambiar_password' %}">
+                                <i class="bi bi-key me-2"></i> Cambiar contraseña
+                            </a>
+                        </li>
+
+                        <li><hr class="dropdown-divider"></li>
+
+                        <li>
+                            <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+                                <i class="bi bi-box-arrow-right me-2"></i> Cerrar sesión
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</nav>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAlertasInspector">
+    <div class="offcanvas-header">
+        <div>
+            <h5 class="fw-bold mb-0">Alertas Inteligentes</h5>
+            <small class="text-muted">Control operativo inspector</small>
+        </div>
+
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+
+    <div class="offcanvas-body">
+
+        <div class="accordion alertas-accordion" id="accordionAlertasInspector">
+
+            <!-- GARANTÍAS -->
+            <div class="accordion-item border-0 mb-3">
+                <button class="dashboard-alert-card alert-warning-soft w-100 text-start"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#alertaGarantias"
+                        aria-expanded="false"
+                        aria-controls="alertaGarantias">
+                    <div class="dashboard-alert-icon">
+                        <i class="bi bi-shield-exclamation"></i>
+                    </div>
+                    <div>
+                        <span>Garantías por vencer</span>
+                        <strong>{{ nav_garantias_por_vencer_count }}</strong>
+                    </div>
+                </button>
+
+                <div id="alertaGarantias"
+                     class="accordion-collapse collapse"
+                     data-bs-parent="#accordionAlertasInspector">
+                    <div class="alertas-detalle-box">
+
+                        {% for garantia in nav_garantias_por_vencer %}
+                            <a href="{% url 'contratos_detalle' garantia.contrato.id %}" class="text-decoration-none text-dark">
+                                <div class="dashboard-alert-row">
+                                    <div>
+                                        <span class="fw-semibold d-block">
+                                            {{ garantia.get_tipo_garantia_display }}
+                                        </span>
+                                        <small class="text-muted">
+                                            {{ garantia.contrato.obra.nombre }}
+                                        </small>
+                                    </div>
+
+                                    <span class="badge bg-warning text-dark">
+                                        {{ garantia.fecha_termino_vigencia|date:"d/m/Y" }}
+                                    </span>
+                                </div>
+                            </a>
+                        {% empty %}
+                            <p class="text-muted small mb-0">Sin garantías próximas a vencer.</p>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- DOCUMENTACIÓN EMPRESA -->
+            <div class="accordion-item border-0 mb-3">
+                <button class="dashboard-alert-card alert-neutral-soft w-100 text-start"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#alertaDocumentacionEmpresa"
+                        aria-expanded="false"
+                        aria-controls="alertaDocumentacionEmpresa">
+                    <div class="dashboard-alert-icon">
+                        <i class="bi bi-folder-check"></i>
+                    </div>
+                    <div>
+                        <span>Documentación empresa</span>
+                        <strong>{{ nav_actas_pendientes_count }}</strong>
+                    </div>
+                </button>
+
+                <div id="alertaDocumentacionEmpresa"
+                     class="accordion-collapse collapse"
+                     data-bs-parent="#accordionAlertasInspector">
+                    <div class="alertas-detalle-box">
+
+                        {% for acta in nav_actas_pendientes %}
+                            <a href="{% url 'actas_detalle' acta.id %}" class="text-decoration-none text-dark">
+                                <div class="dashboard-alert-row">
+                                    <div>
+                                        <span class="fw-semibold d-block">
+                                            Acta N° {{ acta.numero_acta }}
+                                        </span>
+                                        <small class="text-muted">
+                                            {{ acta.nombre_empresa }} · {{ acta.nombre_obra }}
+                                        </small>
+                                    </div>
+
+                                    <span class="badge bg-warning text-dark">
+                                        {{ acta.get_estado_display }}
+                                    </span>
+                                </div>
+                            </a>
+                        {% empty %}
+                            <p class="text-muted small mb-0">Sin documentación pendiente.</p>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- EDP -->
+            <div class="accordion-item border-0 mb-3">
+                <button class="dashboard-alert-card alert-info-soft w-100 text-start"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#alertaEdp"
+                        aria-expanded="false"
+                        aria-controls="alertaEdp">
+                    <div class="dashboard-alert-icon">
+                        <i class="bi bi-cash-stack"></i>
+                    </div>
+                    <div>
+                        <span>Estados de pago pendientes</span>
+                        <strong>{{ nav_edps_pendientes_count }}</strong>
+                    </div>
+                </button>
+
+                <div id="alertaEdp"
+                     class="accordion-collapse collapse"
+                     data-bs-parent="#accordionAlertasInspector">
+                    <div class="alertas-detalle-box">
+
+                        {% for edp in nav_edps_pendientes %}
+                            <a href="{% url 'edp_detalle' edp.id %}" class="text-decoration-none text-dark">
+                                <div class="dashboard-alert-row">
+                                    <div>
+                                        <span class="fw-semibold d-block">
+                                            EDP N° {{ edp.numero_estado_pago }}
+                                        </span>
+                                        <small class="text-muted">
+                                            {% if edp.obra.empresa.first_name %}
+                                                {{ edp.obra.empresa.first_name }} {{ edp.obra.empresa.last_name }}
+                                            {% else %}
+                                                {{ edp.obra.empresa.username }}
+                                            {% endif %}
+                                            · {{ edp.obra.nombre }}
+                                        </small>
+                                    </div>
+
+                                    <span class="badge bg-warning text-dark">
+                                        {{ edp.get_estado_display }}
+                                    </span>
+                                </div>
+                            </a>
+                        {% empty %}
+                            <p class="text-muted small mb-0">No existen EDP pendientes.</p>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- TRABAJADORES -->
+            <div class="accordion-item border-0 mb-0">
+                <button class="dashboard-alert-card alert-danger-soft w-100 text-start"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#alertaTrabajadores"
+                        aria-expanded="false"
+                        aria-controls="alertaTrabajadores">
+                    <div class="dashboard-alert-icon">
+                        <i class="bi bi-person-exclamation"></i>
+                    </div>
+                    <div>
+                        <span>Trabajadores con docs pendientes</span>
+                        <strong>{{ nav_trabajadores_docs_pendientes_count }}</strong>
+                    </div>
+                </button>
+
+                <div id="alertaTrabajadores"
+                     class="accordion-collapse collapse"
+                     data-bs-parent="#accordionAlertasInspector">
+                    <div class="alertas-detalle-box">
+
+                        {% for grupo in nav_trabajadores_pendientes_agrupados %}
+                            {% if grupo.obra_id %}
+                                <a href="{% url 'obras_detalle' grupo.obra_id %}" class="text-decoration-none text-dark">
+                                    <div class="dashboard-alert-row">
+                                        <div>
+                                            <span class="fw-semibold d-block">
+                                                {{ grupo.empresa_nombre }}
+                                            </span>
+                                            <small class="text-muted">
+                                                {{ grupo.obra_nombre }}
+                                            </small>
+                                        </div>
+
+                                        <span class="badge bg-danger">
+                                            {{ grupo.cantidad_pendiente }} pendiente(s)
+                                        </span>
+                                    </div>
+                                </a>
+                            {% else %}
+                                <div class="dashboard-alert-row">
+                                    <div>
+                                        <span class="fw-semibold d-block">
+                                            {{ grupo.empresa_nombre }}
+                                        </span>
+                                        <small class="text-muted">
+                                            {{ grupo.obra_nombre }}
+                                        </small>
+                                    </div>
+
+                                    <span class="badge bg-danger">
+                                        {{ grupo.cantidad_pendiente }} pendiente(s)
+                                    </span>
+                                </div>
+                            {% endif %}
+                        {% empty %}
+                            <p class="text-muted small mb-0">Sin trabajadores con documentación pendiente.</p>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script src="{% static 'js/navbar_inspector.js' %}"></script>

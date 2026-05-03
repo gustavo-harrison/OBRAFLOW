@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load money_filters %}
+
+{% block title %}Editar Contrato{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="mb-4">
+        <h2>Editar Contrato</h2>
+        <p class="text-muted mb-0">
+            Modificar la información de {{ contrato.numero_contrato }}.
+        </p>
+    </div>
+
+    <div class="card shadow-sm obra-form-card">
+        <div class="card-body p-4">
+
+            <form method="POST"
+                  class="form-confirmacion-modal"
+                  data-modal-titulo="Guardar cambios"
+                  data-modal-mensaje="¿Estás seguro de guardar los cambios realizados en este contrato?">
+
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
+                </div>
+                {% endif %}
+
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+                        <label class="form-label obra-form-label"
+                               for="{{ form.obra.id_for_label }}">
+                            Obra
+                        </label>
+
+                        {{ form.obra }}
+
+                        {% if form.obra.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.obra.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label obra-form-label"
+                               for="{{ form.numero_contrato.id_for_label }}">
+                            Número de Contrato
+                        </label>
+
+                        {{ form.numero_contrato }}
+
+                        {% if form.numero_contrato.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.numero_contrato.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label obra-form-label"
+                               for="{{ form.tipo_contrato.id_for_label }}">
+                            Tipo de Contrato
+                        </label>
+
+                        {{ form.tipo_contrato }}
+
+                        {% if form.tipo_contrato.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.tipo_contrato.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label obra-form-label"
+                               for="{{ form.estado.id_for_label }}">
+                            Estado
+                        </label>
+
+                        {{ form.estado }}
+
+                        {% if form.estado.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.estado.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label obra-form-label"
+                               for="{{ form.monto.id_for_label }}">
+                            Monto
+                        </label>
+
+                        {{ form.monto }}
+
+                        <small class="text-muted d-block mt-1">
+                            Valor actual:
+                            {{ contrato.monto|clp }}
+                        </small>
+
+                        {% if form.monto.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.monto.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label obra-form-label"
+                               for="{{ form.plazo_dias.id_for_label }}">
+                            Plazo (días)
+                        </label>
+
+                        {{ form.plazo_dias }}
+
+                        {% if form.plazo_dias.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.plazo_dias.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label obra-form-label"
+                               for="{{ form.fecha_inicio.id_for_label }}">
+                            Fecha de Inicio
+                        </label>
+
+                        {{ form.fecha_inicio }}
+
+                        {% if form.fecha_inicio.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.fecha_inicio.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label obra-form-label"
+                               for="{{ form.fecha_termino.id_for_label }}">
+                            Fecha de Término
+                        </label>
+
+                        {{ form.fecha_termino }}
+
+                        {% if form.fecha_termino.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.fecha_termino.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+                <div class="mt-4 d-flex gap-2 flex-wrap">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Guardar Cambios
+                    </button>
+
+                    <a href="{% url 'contratos_detalle' contrato.id %}"
+                       class="btn btn-secondary">
+                        Cancelar
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<script src="{% static 'js/confirmaciones_modal.js' %}?v=2"></script>
+
+{% endblock %}

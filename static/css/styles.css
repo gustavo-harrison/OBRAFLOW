@@ -1,0 +1,937 @@
+/* ====== Fuente global sistema ====== */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+/* ====== Barra superior Inspector ====== */
+.top-bar-inspector {
+    background-color: #f77300;
+    color: black;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 15px;
+}
+
+/* ====== Barra superior Empresa ====== */
+.top-bar-empresa {
+    background-color: #6f42c1;
+    color: black;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 15px;
+}
+
+/* ====== Información barra superior ====== */
+.top-bar-inspector .hora-info,
+.top-bar-empresa .hora-info {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+/* ====== Iconos RRSS barra superior ====== */
+.top-bar-inspector .social-icons a,
+.top-bar-empresa .social-icons a {
+    color: black;
+    font-size: 18px;
+    margin-left: 15px;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+/* ====== Hover iconos RRSS barra superior ====== */
+.top-bar-inspector .social-icons a:hover,
+.top-bar-empresa .social-icons a:hover {
+    color: #f3f2f2;
+}
+
+/* ====== Navbar Inspector ====== */
+.navbar-inspector {
+    background-color: #ffffff;
+    border-top: 1px solid #4e4e4e;
+    border-bottom: 1px solid #d9d9d9;
+    min-height: 70px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+/* ====== Logo principal OBRAFLOW ====== */
+.logo {
+    height: 100%;
+    max-height: 60px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+/* ====== Color letras menú principal ====== */
+.navbar-inspector .nav-link {
+    color: #4e4e4e;
+    font-weight: 600;
+    font-size: 14px;
+    transition: color 0.2s ease-in-out;
+    white-space: nowrap;
+}
+
+/* ====== Color al pasar encima ====== */
+.navbar-inspector .nav-link:hover {
+    color: #f77300;
+}
+
+/* ====== Ajuste iconos menú ====== */
+.nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* ====== Ajuste ícono login / registrar ====== */
+.login-icon {
+    white-space: nowrap;
+}
+
+/* ====== Contenido principal ====== */
+main.container {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+/* ====== LANDING PAGE ====== */
+.landing-hero {
+    background: linear-gradient(180deg, #fff7f0 0%, #ffffff 100%);
+    border-radius: 20px;
+    margin-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.landing-title {
+    font-size: 42px;
+    color: #212529;
+}
+
+.landing-subtitle {
+    max-width: 760px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #5c5c5c;
+    font-size: 18px;
+}
+
+.landing-card {
+    background-color: #ffffff;
+    border: 1px solid #ececec;
+    border-radius: 18px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.landing-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.08);
+}
+
+.landing-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background-color: #fff1e5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: #f77300;
+}
+
+.landing-panel {
+    background-color: #ffffff;
+    border: 1px solid #ececec;
+    border-radius: 18px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.05);
+}
+
+.landing-panel-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background-color: #fff1e5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f77300;
+    font-size: 24px;
+}
+
+.landing-cta {
+    background: linear-gradient(180deg, #ffffff 0%, #fff7f0 100%);
+    border: 1px solid #ececec;
+    border-radius: 20px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 768px) {
+    .landing-title {
+        font-size: 32px;
+    }
+
+    .landing-subtitle {
+        font-size: 16px;
+    }
+}
+
+/* ====== LOGIN ====== */
+.login-section {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+}
+
+.login-info-panel {
+    background: linear-gradient(180deg, #fff7f0 0%, #ffffff 100%);
+    border: 1px solid #ececec;
+    border-radius: 24px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+}
+
+.login-badge {
+    display: inline-block;
+    background-color: #fff1e5;
+    color: #f77300;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 8px 14px;
+    border-radius: 999px;
+}
+
+.login-title {
+    font-size: 38px;
+    font-weight: 800;
+    color: #212529;
+}
+
+.login-text {
+    color: #5f5f5f;
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+.login-feature {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+.login-feature i {
+    color: #f77300;
+    font-size: 20px;
+}
+
+.login-card {
+    background-color: #ffffff;
+    border: 1px solid #ececec;
+    border-radius: 24px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+.login-icon-wrapper {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background-color: #fff1e5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f77300;
+    font-size: 34px;
+}
+
+.login-input {
+    min-height: 48px;
+    border-radius: 12px;
+    border: 1px solid #dcdcdc;
+    box-shadow: none;
+}
+
+.login-input:focus {
+    border-color: #f77300;
+    box-shadow: 0 0 0 0.15rem rgba(247, 115, 0, 0.15);
+}
+
+.login-password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 39px;
+    border: none;
+    background: transparent;
+    color: #6c757d;
+    padding: 0;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.login-password-toggle:hover {
+    color: #f77300;
+}
+
+.login-btn {
+    background-color: #f77300;
+    border: none;
+    color: white;
+    min-height: 48px;
+    border-radius: 12px;
+    font-weight: 700;
+    transition: all 0.2s ease-in-out;
+}
+
+.login-btn:hover {
+    background-color: #dd6700;
+    color: white;
+}
+
+.login-error {
+    background-color: #fff3f3;
+    border: 1px solid #f1c9c9;
+    color: #b42318;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+@media (max-width: 991px) {
+    .login-title {
+        font-size: 32px;
+    }
+
+    .login-section {
+        min-height: auto;
+    }
+}
+
+/* ====== CARDS OBRAS ====== */
+.obra-card {
+    border-width: 1.5px;
+    border-style: solid;
+    border-radius: 18px;
+    overflow: hidden;
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+    background-color: #ffffff;
+}
+
+.obra-card-inspector {
+    border-color: #f77300;
+}
+
+.obra-card-empresa {
+    border-color: #6f42c1;
+}
+
+.obra-card:hover {
+    transform: translateY(-10px) scale(1.01);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.14);
+}
+
+.obra-card-inspector:hover {
+    border-color: #dd6700;
+}
+
+.obra-card-empresa:hover {
+    border-color: #59359c;
+}
+
+.obra-card-icon {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.obra-card-icon-inspector {
+    background-color: #fff1e5;
+    color: #f77300;
+}
+
+.obra-card-icon-empresa {
+    background-color: #f1ebff;
+    color: #6f42c1;
+}
+
+.obra-card:hover .obra-card-icon {
+    transform: scale(1.12) rotate(-4deg);
+}
+
+.obra-card-inspector:hover .obra-card-icon-inspector {
+    box-shadow: 0 10px 18px rgba(247, 115, 0, 0.18);
+}
+
+.obra-card-empresa:hover .obra-card-icon-empresa {
+    box-shadow: 0 10px 18px rgba(111, 66, 193, 0.18);
+}
+
+/* ====== BADGES ESTADO ====== */
+.obra-badge {
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    display: inline-block;
+    border: 1px solid transparent;
+    font-weight: 600;
+}
+
+.obra-badge-planificacion {
+    background-color: #fff3cd;
+    color: #856404;
+    border-color: #ffe69c;
+}
+
+.obra-badge-proceso {
+    background-color: #cfe2ff;
+    color: #084298;
+    border-color: #9ec5fe;
+}
+
+.obra-badge-finalizada {
+    background-color: #d1e7dd;
+    color: #0f5132;
+    border-color: #a3cfbb;
+}
+
+.obra-badge-rechazado{
+    background-color: #dc3545;
+    color: #ffffff;
+    border: 1px solid #dc3545;
+}
+
+.obra-badge-pagado{
+    background-color: #6f42c1;
+    color: #ffffff;
+    border: 1px solid #6f42c1;
+}
+
+/* ====== FOOTER CARD ====== */
+.obra-card .card-footer {
+    background-color: #ffffff;
+    border-top: none;
+}
+
+.obra-card .card-footer .btn {
+    min-width: 80px;
+}
+
+/* ====== MODAL CONFIRMACIÓN ====== */
+.modal-confirmacion {
+    border-radius: 18px;
+    border: 1px solid #ececec;
+    box-shadow: 0 16px 35px rgba(0, 0, 0, 0.14);
+}
+
+.modal-confirmacion .modal-title {
+    color: #212529;
+}
+
+.modal-confirmacion .modal-body p {
+    color: #5f5f5f;
+    line-height: 1.6;
+}
+
+/* ====== FORMULARIOS OBRAS ====== */
+.obra-form-card {
+    border: 1px solid #ececec;
+    border-radius: 18px;
+}
+
+.obra-form-label {
+    font-weight: 600;
+    color: #343a40;
+    margin-bottom: 8px;
+}
+
+.obra-form-card input,
+.obra-form-card select,
+.obra-form-card textarea {
+    border-radius: 12px;
+    border: 1px solid #d9d9d9;
+    min-height: 46px;
+    box-shadow: none;
+}
+
+.obra-form-card textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.obra-form-card input:focus,
+.obra-form-card select:focus,
+.obra-form-card textarea:focus {
+    border-color: #f77300;
+    box-shadow: 0 0 0 0.15rem rgba(247, 115, 0, 0.15);
+}
+
+/* ====== FILTROS OBRAS ====== */
+.obra-form-card input,
+.obra-form-card select {
+    border-radius: 12px;
+    border: 1px solid #d9d9d9;
+    min-height: 46px;
+    box-shadow: none;
+}
+
+.obra-form-card input:focus,
+.obra-form-card select:focus {
+    border-color: #f77300;
+    box-shadow: 0 0 0 0.15rem rgba(247, 115, 0, 0.15);
+}
+
+/* ====== CARD CLICKEABLE ====== */
+.obra-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.obra-card-link:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ====== CONTRATOS Y GARANTÍAS EN DETALLE DE OBRA ====== */
+.contrato-detalle-card {
+    border-radius: 16px;
+}
+
+.garantia-card {
+    border-radius: 14px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.garantia-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+}
+
+.garantia-badge {
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    display: inline-block;
+    border: 1px solid transparent;
+    font-weight: 600;
+}
+
+.garantia-badge-fiel {
+    background-color: #fff3cd;
+    color: #856404;
+    border-color: #ffe69c;
+}
+
+.garantia-badge-civil {
+    background-color: #cfe2ff;
+    color: #084298;
+    border-color: #9ec5fe;
+}
+
+.garantia-badge-anticipo {
+    background-color: #e2d9f3;
+    color: #5a2d91;
+    border-color: #cbbbe9;
+}
+
+/* =========================
+   REPORTES - CHECKBOXES
+========================= */
+
+.form-check-input {
+    width: 1.15rem;
+    height: 1.15rem;
+    margin-top: 0;
+    cursor: pointer;
+    border: 1.5px solid #adb5bd;
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.form-check-label {
+    margin: 0;
+    cursor: pointer;
+    font-weight: 500;
+    color: #212529;
+}
+
+.form-check-input:focus {
+    box-shadow: none;
+    border-color: #0d6efd;
+}
+
+.form-check-input:checked {
+    transform: scale(1.05);
+}
+
+.reportes-check-group {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 18px;
+    height: 100%;
+}
+
+/* =========================
+   DASHBOARDS
+========================= */
+
+.dashboard-welcome-card {
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.dashboard-inspector-card {
+    border: 1px solid rgba(243, 112, 33, 0.18);
+}
+
+.dashboard-empresa-card {
+    border: 1px solid rgba(111, 66, 193, 0.18);
+}
+
+.dashboard-role-image {
+    max-height: 220px;
+    object-fit: contain;
+}
+
+.dashboard-live-box {
+    background: #f8f9fa;
+    border: 1px solid #ececec;
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: inline-block;
+    min-width: 220px;
+}
+
+.dashboard-live-label {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 4px;
+}
+
+.dashboard-live-time {
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.dashboard-live-date {
+    font-size: 0.95rem;
+    color: #495057;
+    margin-top: 4px;
+    text-transform: capitalize;
+}
+
+.dashboard-mini-stat {
+    border-radius: 16px;
+}
+
+.dashboard-stat-label {
+    font-size: 0.92rem;
+    color: #6c757d;
+    margin-bottom: 6px;
+}
+
+.dashboard-stat-value {
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.dashboard-status-list {
+    display: grid;
+    gap: 12px;
+}
+
+.dashboard-status-pill {
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    border: 1px solid transparent;
+}
+
+.dashboard-status-pill strong {
+    font-size: 1.1rem;
+}
+
+.status-success {
+    background: rgba(25, 135, 84, 0.10);
+    border-color: rgba(25, 135, 84, 0.18);
+    color: #146c43;
+}
+
+.status-warning {
+    background: rgba(255, 193, 7, 0.14);
+    border-color: rgba(255, 193, 7, 0.22);
+    color: #997404;
+}
+
+.status-info {
+    background: rgba(13, 202, 240, 0.12);
+    border-color: rgba(13, 202, 240, 0.22);
+    color: #087990;
+}
+
+.status-neutral {
+    background: rgba(108, 117, 125, 0.10);
+    border-color: rgba(108, 117, 125, 0.18);
+    color: #495057;
+}
+
+/* =========================
+   DASHBOARD - ALERTAS
+========================= */
+
+.dashboard-alert-card {
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    height: 100%;
+    border: 1px solid transparent;
+}
+
+.dashboard-alert-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.7);
+    font-size: 1.25rem;
+}
+
+.dashboard-alert-card span {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.dashboard-alert-card strong {
+    font-size: 1.55rem;
+    line-height: 1;
+}
+
+.alert-warning-soft {
+    background: rgba(255, 193, 7, 0.14);
+    border-color: rgba(255, 193, 7, 0.25);
+    color: #997404;
+}
+
+.alert-info-soft {
+    background: rgba(13, 202, 240, 0.12);
+    border-color: rgba(13, 202, 240, 0.22);
+    color: #087990;
+}
+
+.alert-danger-soft {
+    background: rgba(220, 53, 69, 0.10);
+    border-color: rgba(220, 53, 69, 0.20);
+    color: #b02a37;
+}
+
+.alert-neutral-soft {
+    background: rgba(108, 117, 125, 0.10);
+    border-color: rgba(108, 117, 125, 0.18);
+    color: #495057;
+}
+
+.dashboard-alert-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid #eeeeee;
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    background: #ffffff;
+}
+
+.status-danger {
+    background: rgba(220, 53, 69, 0.10);
+    border-color: rgba(220, 53, 69, 0.20);
+    color: #b02a37;
+}
+
+/* =========================
+   NAVBAR ALERTAS
+========================= */
+
+.nav-alert-btn {
+    color: #212529;
+    text-decoration: none;
+    padding: 6px 10px;
+}
+
+.nav-alert-btn:hover {
+    color: #f37021;
+}
+
+.offcanvas {
+    border-top-left-radius: 18px;
+    border-bottom-left-radius: 18px;
+}
+
+.offcanvas-body .dashboard-alert-card {
+    margin-bottom: 12px;
+}
+
+/* =========================
+   FIRMA DIGITAL SIMPLE
+========================= */
+
+.firma-digital-texto {
+    font-family: "Brush Script MT", "Segoe Script", cursive;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #1d4ed8;
+    line-height: 1.1;
+}
+
+/* =========================
+   REPORTES - CARDS CHECKBOX
+========================= */
+
+.reportes-check-group {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 16px;
+    padding: 18px;
+    height: 100%;
+    display: grid;
+    gap: 12px;
+}
+
+.reporte-check-card {
+    position: relative;
+    display: block;
+    cursor: pointer;
+    margin: 0;
+}
+
+.reporte-check-card input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.reporte-check-content {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 74px;
+    padding: 14px 16px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 14px;
+    background: #ffffff;
+    transition: all 0.2s ease-in-out;
+}
+
+.reporte-check-icon {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    border-radius: 12px;
+    background: #fff1e5;
+    color: #f77300;
+    display: grid;
+    place-items: center;
+    font-size: 1.25rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.reporte-check-title {
+    display: block;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 2px;
+}
+
+.reporte-check-content small {
+    color: #6c757d;
+    line-height: 1.3;
+}
+
+.reporte-check-card:hover .reporte-check-content {
+    border-color: #f77300;
+    box-shadow: 0 8px 18px rgba(247, 115, 0, 0.10);
+    transform: translateY(-2px);
+}
+
+.reporte-check-card input[type="checkbox"]:checked + .reporte-check-content {
+    border-color: #198754;
+    background: #f2fbf6;
+    box-shadow: 0 8px 18px rgba(25, 135, 84, 0.10);
+}
+
+.reporte-check-card input[type="checkbox"]:checked + .reporte-check-content .reporte-check-icon {
+    background: #d1e7dd;
+    color: #198754;
+}
+
+.reporte-check-card input[type="checkbox"]:checked + .reporte-check-content .reporte-check-icon::before {
+    content: "✓";
+    font-weight: 800;
+    font-size: 1.15rem;
+}
+
+.reporte-check-card input[type="checkbox"]:checked + .reporte-check-content .reporte-check-icon i {
+    display: none;
+}
+
+/* =========================
+   ALERTAS INTELIGENTES - ACCORDION
+========================= */
+
+.alertas-accordion .accordion-item {
+    background: transparent;
+}
+
+.alertas-accordion .dashboard-alert-card {
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.alertas-accordion .dashboard-alert-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+}
+
+.alertas-accordion .dashboard-alert-card[aria-expanded="true"] {
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.10);
+}
+
+.alertas-detalle-box {
+    padding: 12px 0 2px 0;
+}
+
+.alertas-detalle-box .dashboard-alert-row {
+    margin-bottom: 10px;
+}

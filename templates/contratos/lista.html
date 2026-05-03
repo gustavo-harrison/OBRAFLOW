@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+{% load money_filters %}
+
+{% block title %}Contratos{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <h2 class="mb-0">Listado de Contratos</h2>
+
+        <div class="d-flex gap-2 flex-wrap">
+
+            {% if request.user.role == 'INSPECTOR' %}
+            <a href="{% url 'contratos_crear' %}" class="btn btn-primary">
+                + Nuevo Contrato
+            </a>
+            {% endif %}
+
+            <button class="btn btn-outline-dark position-relative"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#filtrosContratos"
+                    aria-expanded="false"
+                    aria-controls="filtrosContratos">
+
+                <i class="bi bi-funnel me-1"></i> Filtros
+
+                {% if filtros_activos > 0 %}
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{ filtros_activos }}
+                </span>
+                {% endif %}
+
+            </button>
+
+        </div>
+    </div>
+
+    <div class="collapse mb-4 {% if busqueda or tipo_actual or estado_actual %}show{% endif %}"
+         id="filtrosContratos">
+
+        <div class="card shadow-sm obra-form-card">
+            <div class="card-body p-4">
+
+                <form method="GET">
+
+                    <div class="row g-3 align-items-end">
+
+                        <div class="col-md-5">
+                            <label class="form-label obra-form-label">
+                                Buscar por número, obra o licitación
+                            </label>
+
+                            <input
+                                type="text"
+                                name="q"
+                                value="{{ busqueda }}"
+                                class="form-control"
+                                placeholder="Ej: CT-001, nombre obra o LIC-001">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label obra-form-label">
+                                Tipo de Contrato
+                            </label>
+
+                            <select name="tipo" class="form-select">
+
+                                <option value="">Todos</option>
+
+                                {% for value, label in tipo_choices %}
+                                <option value="{{ value }}"
+                                    {% if tipo_actual == value %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                                {% endfor %}
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label obra-form-label">
+                                Estado
+                            </label>
+
+                            <select name="estado" class="form-select">
+
+                                <option value="">Todos</option>
+
+                                {% for value, label in estado_choices %}
+                                <option value="{{ value }}"
+                                    {% if estado_actual == value %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                                {% endfor %}
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-2 d-flex gap-2">
+                            <button type="submit"
+                                    class="btn btn-primary w-100">
+                                Filtrar
+                            </button>
+
+                            <a href="{% url 'contratos' %}"
+                               class="btn btn-outline-secondary w-100">
+                                Limpiar
+                            </a>
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        {% for contrato in contratos %}
+
+        <div class="col-md-4 mb-4">
+
+            <a href="{% url 'contratos_detalle' contrato.id %}"
+               class="obra-card-link">
+
+                <div class="card shadow-sm h-100 obra-card
+                    {% if request.user.role == 'INSPECTOR' %}
+                        obra-card-inspector
+                    {% elif request.user.role == 'CONTRATISTA' %}
+                        obra-card-empresa
+                    {% endif %}">
+
+                    <div class="card-body text-center">
+
+                        <div class="obra-card-icon
+                            {% if request.user.role == 'INSPECTOR' %}
+                                obra-card-icon-inspector
+                            {% elif request.user.role == 'CONTRATISTA' %}
+                                obra-card-icon-empresa
+                            {% endif %} mb-3">
+
+                            <i class="bi bi-file-earmark-text"></i>
+
+                        </div>
+
+                        <h5 class="card-title fw-bold mb-2">
+                            {{ contrato.numero_contrato }}
+                        </h5>
+
+                        <p class="mb-2 text-muted">
+                            {{ contrato.obra.nombre }}
+                        </p>
+
+                        <p class="mb-2">
+                            <strong>Licitación:</strong>
+                            {{ contrato.obra.codigo }}
+                        </p>
+
+                        <p class="mb-3">
+                            <strong>Monto:</strong>
+                            {{ contrato.monto|clp }}
+                        </p>
+
+                        <span class="badge obra-badge
+                            {% if contrato.estado == 'VIGENTE' %}
+                                obra-badge-proceso
+                            {% elif contrato.estado == 'FINALIZADO' %}
+                                obra-badge-finalizada
+                            {% elif contrato.estado == 'SUSPENDIDO' %}
+                                obra-badge-planificacion
+                            {% endif %}">
+
+                            {{ contrato.get_estado_display }}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        {% empty %}
+
+        <div class="col-12">
+            <div class="alert alert-warning">
+                No se encontraron contratos con los filtros seleccionados.
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

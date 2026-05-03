@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Detalle Documento{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow-sm">
+        <div class="card-body p-5">
+
+            <div class="d-flex justify-content-between align-items-center mb-5 flex-wrap gap-3">
+                <div>
+                    {% if config_acta and config_acta.nombre_mandante %}
+                        <h5 class="fw-bold mb-1">{{ config_acta.nombre_mandante }}</h5>
+                    {% endif %}
+                    <p class="mb-0 text-muted">Documento formal de obra</p>
+                </div>
+
+                {% if config_acta and config_acta.logo_mandante %}
+                    <img src="{{ config_acta.logo_mandante.url }}"
+                         alt="Logo Mandante"
+                         style="max-height: 90px; max-width: 220px; object-fit: contain;">
+                {% endif %}
+            </div>
+
+            <div class="text-center mb-5">
+                <h3 class="fw-bold">{{ documento.titulo }}</h3>
+                <p class="mb-1">Acta N° {{ documento.numero_acta }}</p>
+                <p class="mb-0">{{ documento.get_tipo_acta_display }}</p>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <p><strong>Obra:</strong> {{ documento.nombre_obra }}</p>
+                    <p><strong>Código Licitación:</strong> {{ documento.codigo_licitacion }}</p>
+                    <p><strong>Empresa:</strong> {{ documento.nombre_empresa }}</p>
+                    <p><strong>RUT Empresa:</strong> {{ documento.rut_empresa }}</p>
+                </div>
+
+                <div class="col-md-6">
+                    <p><strong>Inspector:</strong> {{ documento.nombre_inspector }}</p>
+                    <p><strong>Ubicación:</strong> {{ documento.ubicacion_obra }}</p>
+                    <p><strong>Fecha Acta:</strong> {{ documento.fecha_acta }}</p>
+
+                    <p>
+                        <strong>Estado:</strong>
+                        <span class="badge
+                            {% if documento.estado == 'FIRMADA' %}
+                                bg-success
+                            {% elif documento.estado == 'PENDIENTE_EMPRESA' %}
+                                bg-warning text-dark
+                            {% elif documento.estado == 'PENDIENTE_INSPECTOR' %}
+                                bg-warning text-dark
+                            {% elif documento.estado == 'PENDIENTE' %}
+                                bg-secondary
+                            {% endif %}">
+                        {{ documento.get_estado_display }}
+                    </span>
+                    </p>
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="mb-5">
+                <h5 class="fw-bold mb-3">Contenido</h5>
+                <div style="white-space: pre-line; line-height: 1.8;">
+                    {{ documento.cuerpo_acta }}
+                </div>
+            </div>
+
+            {% if documento.observaciones %}
+            <div class="mb-5">
+                <h5 class="fw-bold mb-3">Observaciones</h5>
+                <div style="white-space: pre-line; line-height: 1.8;">
+                    {{ documento.observaciones }}
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="row mt-5 pt-5 text-center">
+
+                <div class="col-md-6 mb-5">
+
+                    {% if documento.firmado_inspector %}
+                        <div class="mb-2">
+                            <div class="firma-digital-texto">
+                                {{ documento.firma_inspector_texto }}
+                            </div>
+                            <small class="text-success d-block">
+                                Firmado digitalmente
+                            </small>
+                            <small class="text-muted d-block">
+                                {{ documento.fecha_firma_inspector }}
+                            </small>
+                        </div>
+                    {% else %}
+                        <div class="mb-4 text-muted small">
+                            Pendiente de firma
+                        </div>
+                    {% endif %}
+
+                    <div style="border-top: 1px solid #000; width: 80%; margin: auto;"></div>
+                    <p class="mt-2 mb-0 fw-bold">{{ documento.firma_inspector_texto }}</p>
+                    <small>Inspector Técnico de Obras</small>
+                </div>
+
+                <div class="col-md-6 mb-5">
+
+                    {% if documento.firmado_empresa %}
+                        <div class="mb-2">
+                            <div class="firma-digital-texto">
+                                {{ documento.firma_empresa_texto }}
+                            </div>
+                            <small class="text-success d-block">
+                                Firmado digitalmente
+                            </small>
+                            <small class="text-muted d-block">
+                                {{ documento.fecha_firma_empresa }}
+                            </small>
+                        </div>
+                    {% else %}
+                        <div class="mb-4 text-muted small">
+                            Pendiente de firma
+                        </div>
+                    {% endif %}
+
+                    <div style="border-top: 1px solid #000; width: 80%; margin: auto;"></div>
+                    <p class="mt-2 mb-0 fw-bold">{{ documento.firma_empresa_texto }}</p>
+                    <small>Representante Empresa Contratista</small>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex gap-2 flex-wrap">
+
+        <a href="{% url 'documentos' %}" class="btn btn-secondary">
+            Volver al listado
+        </a>
+
+        {% if request.user.role == 'CONTRATISTA' %}
+
+            {% if not documento.firmado_empresa %}
+                <form method="POST"
+                      action="{% url 'firmar_acta' documento.id %}"
+                      class="form-confirmacion-modal d-inline"
+                      data-modal-titulo="Firmar Acta"
+                      data-modal-mensaje="¿Confirmas la firma digital simple de la empresa?">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">
+                        Firmar como Empresa
+                    </button>
+                </form>
+            {% else %}
+                <button class="btn btn-outline-success" disabled>
+                    Empresa ya firmó
+                </button>
+            {% endif %}
+
+            {% if documento.firmado_inspector and documento.firmado_empresa %}
+                <a href="{% url 'actas_pdf' documento.id %}" class="btn btn-success">
+                    Descargar PDF
+                </a>
+            {% else %}
+                <button class="btn btn-outline-secondary" disabled>
+                    PDF disponible cuando ambas partes firmen
+                </button>
+            {% endif %}
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<script src="{% static 'js/confirmaciones_modal.js' %}?v=2"></script>
+
+{% endblock %}

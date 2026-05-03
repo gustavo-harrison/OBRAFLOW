@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio | OBRAFLOW{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section id="inicio" class="landing-hero text-center py-5">
+    <div class="container">
+        <h1 class="landing-title fw-bold">Bienvenido a OBRAFLOW</h1>
+        <p class="landing-subtitle mt-3">
+            Una plataforma de gestión para el control de tus proyectos
+        </p>
+
+        <div class="mt-4 d-flex justify-content-center gap-3 flex-wrap">
+            <a href="{% url 'login' %}" class="btn btn-dark px-4">Ingresar al sistema</a>
+            <a href="#beneficios" class="btn btn-outline-dark px-4">Conocer más</a>
+        </div>
+    </div>
+</section>
+
+<!-- BENEFICIOS -->
+<section id="beneficios" class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">¿Qué ofrece OBRAFLOW?</h2>
+            <p class="text-muted">Una solución pensada para ordenar, centralizar y optimizar la gestión de obras.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="landing-card h-100 text-center p-4">
+                    <div class="landing-icon mb-3">
+                        <i class="bi bi-buildings"></i>
+                    </div>
+                    <h4 class="fw-bold">Gestión de Obras</h4>
+                    <p class="mb-0">
+                        Visualiza y administra las obras de manera centralizada, con acceso diferenciado según el rol del usuario.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="landing-card h-100 text-center p-4">
+                    <div class="landing-icon mb-3">
+                        <i class="bi bi-file-earmark-text"></i>
+                    </div>
+                    <h4 class="fw-bold">Control Documental</h4>
+                    <p class="mb-0">
+                        Organiza contratos, antecedentes y documentación crítica para mantener trazabilidad y orden administrativo.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="landing-card h-100 text-center p-4">
+                    <div class="landing-icon mb-3">
+                        <i class="bi bi-cash-stack"></i>
+                    </div>
+                    <h4 class="fw-bold">Estados de Pago</h4>
+                    <p class="mb-0">
+                        Facilita el seguimiento y consulta de estados de pago, tanto para inspectores como para empresas contratistas.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MISION Y VISION -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div id="mision" class="landing-panel h-100 p-4">
+                    <div class="d-flex align-items-center mb-3 gap-3">
+                        <div class="landing-panel-icon">
+                            <i class="bi bi-bullseye"></i>
+                        </div>
+                        <h3 class="fw-bold mb-0">Misión</h3>
+                    </div>
+                    <p class="mb-0">
+                        Facilitar la gestión integral de obras mediante una plataforma digital eficiente,
+                        permitiendo a inspectores y empresas contratistas optimizar procesos, reducir errores
+                        y mejorar la trazabilidad de la información.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div id="vision" class="landing-panel h-100 p-4">
+                    <div class="d-flex align-items-center mb-3 gap-3">
+                        <div class="landing-panel-icon">
+                            <i class="bi bi-eye"></i>
+                        </div>
+                        <h3 class="fw-bold mb-0">Visión</h3>
+                    </div>
+                    <p class="mb-0">
+                        Convertirnos en una plataforma de referencia en gestión de obras,
+                        integrando tecnología, orden y eficiencia para transformar la administración
+                        de proyectos de construcción.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CIERRE -->
+<section class="py-5 text-center">
+    <div class="container">
+        <div class="landing-cta p-4">
+            <h3 class="fw-bold">Un sistema, múltiples actores, una sola gestión ordenada.</h3>
+            <p class="mt-3 mb-4">
+                OBRAFLOW conecta inspectores y empresas contratistas en una misma plataforma.
+            </p>
+            <a href="{% url 'login' %}" class="btn btn-dark px-4">Comenzar</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

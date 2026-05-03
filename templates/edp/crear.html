@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Nuevo Estado de Pago{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="mb-4">
+        <h2>Nuevo Estado de Pago</h2>
+        <p class="text-muted mb-0">Registrar un nuevo estado de pago para una obra.</p>
+    </div>
+
+    <div class="card shadow-sm obra-form-card">
+        <div class="card-body p-4">
+
+            <form method="POST" class="form-confirmacion-modal"
+                  data-modal-titulo="Registrar Estado de Pago"
+                  data-modal-mensaje="¿Estás seguro de registrar este nuevo Estado de Pago?">
+
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                {% endif %}
+
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+                        <label class="form-label obra-form-label">Obra</label>
+                        {{ form.obra }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label obra-form-label">Número Estado de Pago</label>
+                        {{ form.numero_estado_pago }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label obra-form-label">Fecha de Emisión</label>
+                        {{ form.fecha_inicio_periodo }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label obra-form-label">Estado</label>
+                        {{ form.estado }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label obra-form-label">% Gastos Generales</label>
+                        {{ form.porcentaje_gastos_generales }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label obra-form-label">% Utilidades</label>
+                        {{ form.porcentaje_utilidades }}
+                    </div>
+
+                    <div class="col-12" id="titulo-anticipo">
+                        <hr>
+                        <h5 class="mb-3">Configuración de Anticipo</h5>
+                    </div>
+
+                    <div class="col-md-6" id="campo-tiene-anticipo">
+                        <div class="form-check mt-2">
+                            {{ form.tiene_anticipo }}
+                            <label class="form-check-label ms-2">
+                                Marca la casilla si la empresa solicitó anticipo
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6"></div>
+
+                    <div class="col-md-6" id="campo-porcentaje-anticipo">
+                        <label class="form-label obra-form-label">% Anticipo del Contrato</label>
+                        {{ form.porcentaje_anticipo }}
+                    </div>
+
+                    <div class="col-md-6" id="campo-devolucion-anticipo">
+                        <label class="form-label obra-form-label">% de devolución en este EDP</label>
+                        {{ form.porcentaje_devolucion_anticipo }}
+                    </div>
+
+                </div>
+
+                <div class="mt-4 d-flex gap-2 flex-wrap">
+                    <button type="submit" class="btn btn-primary">Registrar Estado de Pago</button>
+                    <a href="{% url 'edp' %}" class="btn btn-secondary">Cancelar</a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<script src="{% static 'js/confirmaciones_modal.js' %}?v=2"></script>
+<script src="{% static 'js/edp_form.js' %}?v=5"></script>
+
+{% endblock %}
