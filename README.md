@@ -167,7 +167,7 @@ Se recomienda revisar:
 
 # Autor
 
-**Harrison Lara Guerrero**
+**Harrison Gustavo Guerrero**
 
 Desarrollador de OBRAFLOW.
 
