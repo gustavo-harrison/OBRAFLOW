@@ -6,7 +6,7 @@ OBRAFLOW centraliza procesos entre Inspector Técnico de Obras, Empresas Contrat
 
 ---
 
-# 🎯 Objetivo del Proyecto
+# Objetivo del Proyecto
 
 Diseñar e implementar una solución digital funcional, abordable y escalable, enfocada en optimizar la administración documental y operativa de proyectos de construcción.
 
@@ -43,7 +43,7 @@ Funciones principales del inspector:
 - Visualizar dashboard ejecutivo
 - Revisar alertas inteligentes
 
-## 🏢 Empresa Contratista
+## 🏭 Empresa Contratista
 
 - Usuario: `empresa1`
 - Contraseña: `Obraflow#123`
@@ -62,7 +62,7 @@ Funciones principales:
 
 ---
 
-# ⚙️ Módulos Implementados
+# Módulos Implementados
 
 - Gestión de Obras
 - Gestión de Contratos
@@ -79,7 +79,7 @@ Funciones principales:
 
 ---
 
-# 🛠️ Tecnologías Utilizadas
+# Tecnologías Utilizadas
 
 ## Backend
 
@@ -108,7 +108,7 @@ Funciones principales:
 
 ---
 
-# 🚀 Ejecución Local
+# Ejecución Local
 
 Comandos para ejecutar el proyecto:
 
@@ -126,7 +126,7 @@ Acceso local:
 
 ---
 
-# 📈 Escalabilidad Futura
+# Escalabilidad Futura
 
 El sistema fue desarrollado con una estructura modular, permitiendo futuras mejoras como:
 
@@ -143,7 +143,7 @@ El sistema fue desarrollado con una estructura modular, permitiendo futuras mejo
 
 ---
 
-# 📄 Observaciones
+# Observaciones
 
 Proyecto desarrollado buscando equilibrio entre alcance realista, complejidad técnica y proyección futura.
 
@@ -151,7 +151,7 @@ Se priorizó una solución funcional, ordenada, abordable y adaptable a crecimie
 
 ---
 
-# 📷 Evidencia Visual
+# Evidencia Visual
 
 Para revisión funcional, utilizar los usuarios de prueba indicados anteriormente.
 
@@ -165,7 +165,7 @@ Se recomienda revisar:
 - Alertas Inteligentes
 - Firmas digitales
 
-# 👨‍💻 Autor
+# Autor
 
 **Harrison Lara Guerrero**
 
