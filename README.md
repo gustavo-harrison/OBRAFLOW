@@ -1,6 +1,6 @@
 # OBRAFLOW 🏗️
 
-Sistema web desarrollado como proyecto final académico para la gestión administrativa y operativa de obras de construcción.
+Sistema web desarrollado durante la practica profeisonal para la gestión administrativa y operativa de los proyectos constructivos pertenecientes al Departamento de Obras Y SS.GG UTEM.
 
 OBRAFLOW centraliza procesos entre Inspector Técnico de Obras, Empresas Contratistas y Administración del sistema, permitiendo controlar obras, contratos, garantías, trabajadores, actas oficiales y estados de pago en una sola plataforma.
 
